@@ -1,7 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./src/config/database");
+
+// Models
+const Enterprise = require("./src/models/enterprise");
+const EnterpriseCategory = require("./src/models/enterpriseCategory");
+const Event = require("./src/models/event");
+const Region = require("./src/models/region");
+const Roadmap = require("./src/models/roadmap");
 const User = require("./src/models/user");
+
+// Routes
 const userRouter = require("./src/routes/userRoute");
 
 const app = express();
