@@ -1,15 +1,27 @@
-const Sequelize = require("sequelize");
+const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize("postgres", "postgres", "postgres", {
+const sequelize = new Sequelize("mydb", "postgres", "postgres", {
   host: "localhost",
   dialect: "postgres",
 });
 
-const db = {};
+// Define the relationships between models
+// Region.BelongsTo(Enterprise);
+// Enterprise.hasMany(Region);
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+// Enterprise.belongsTo(EnterpriseCategory);
+// EnterpriseCategory.hasMany(Enterprise);
 
-db.users = require("../models/user")(sequelize, Sequelize);
+// Enterprise.hasMany(Event);
+// Event.belongsTo(Enterprise);
 
-module.exports = db;
+// Event.belongsTo(Region);
+// Region.hasMany(Event);
+
+// Roadmap.belongsTo(Enterprise);
+// Enterprise.hasMany(Roadmap);
+
+// Roadmap.belongsTo(Region);
+// Region.hasMany(Roadmap);
+
+module.exports = sequelize;

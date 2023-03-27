@@ -1,21 +1,36 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./src/config/database");
+const User = require("./src/models/user");
+const userRouter = require("./src/routes/userRoute");
 
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
-const usersRouter = require("./src/routes/userRoute");
-app.use("/users", usersRouter);
+app.use("/users", userRouter);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+// Route to fetch all users from the database
+app.get("/", async (req, res) => {
+  try {
+    const users = await User.findAll();
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
 
-db.sequelize.sync().then(() => {
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
-});
+db.authenticate()
+  .then(() => {
+    console.log("Database connected...");
+    return db.sync();
+  })
+  .then(() => {
+    console.log("Tables created...");
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+  })
+  .catch((err) => console.log(err));

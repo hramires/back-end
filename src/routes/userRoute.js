@@ -1,29 +1,29 @@
-// const express = require("express");
-// //const { body } = require("express-validator/check");
-// const userController = require("../controllers/userController");
-
-// const router = express.Router();
-
-// router.get("/", userController.getAll);
-
-// module.exports = router;
 const express = require("express");
 const router = express.Router();
-const db = require("../config/database");
+const User = require("../models/user");
 
+// GET all users
 router.get("/", async (req, res) => {
-  const users = await db.users.findAll();
-  res.json(users);
+  try {
+    const users = await User.findAll();
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
 
+// POST a new user
 router.post("/", async (req, res) => {
-  const { name, email, password } = req.body;
-  const newUser = await db.users.create({
-    name,
-    email,
-    password,
-  });
-  res.json(newUser);
+  const { email } = req.body;
+
+  try {
+    const newUser = await User.create({ email });
+    res.json(newUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
 
 module.exports = router;
