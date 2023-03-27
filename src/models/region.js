@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const db = require("../config/database");
 
-const Region = db.define("Region", {
+const Roadmap = db.define("Roadmap", {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -12,7 +12,15 @@ const Region = db.define("Region", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  city: {
+  region_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  roadmap_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  roadmap: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -20,10 +28,6 @@ const Region = db.define("Region", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  photo: {
-    type: DataTypes.BLOB,
-    allowNull: false,
-  },
 });
 
-module.exports = Region;
+module.exports = Roadmap;
