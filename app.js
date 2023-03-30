@@ -1,7 +1,10 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const cors = require("cors");
+
 const db = require("./src/config/database");
 const associations = require("./src/config/databaseAssociation");
+const preload = require("./src/config/databasePreLoad");
 
 // Set up associations
 associations();
@@ -13,7 +16,8 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
+
 app.use("/users", userRouter);
 
 // Route to fetch all users from the database
@@ -37,5 +41,9 @@ db.authenticate()
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });
+  })
+  .then(() => {
+    //Preload database data
+    preload();
   })
   .catch((err) => console.log(err));
