@@ -22,7 +22,7 @@ const Enterprise = db.define("Enterprise", {
   },
   photos: {
     type: DataTypes.BLOB,
-    allowNull: false,
+    allowNull: true,
   },
   opening_hour: {
     type: DataTypes.STRING,
