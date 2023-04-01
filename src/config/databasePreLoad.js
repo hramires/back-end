@@ -15,7 +15,7 @@ async function preloadData() {
       },
     ];
 
-    const userData = [{ email: "johndoe@email.com" }];
+    const userData = [{ email: "Jorge@email.com", password: "jorge123" }];
 
     const eventData = [
       {

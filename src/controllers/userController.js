@@ -1,10 +1,15 @@
 const User = require("../models/user");
+const { getAll, create } = require("../services/userService");
 
-async function getAll(req, res, next) {
-  try {
-    const ALL = await User.findAll();
-    return res.status(200).JSON(ALL);
-  } catch (error) {}
+async function getAllUsers(req, res) {
+  let { status, data } = await getAll();
+  res.status(status).json(data);
 }
 
-export default { getAll };
+async function createUser(req, res) {
+  const { email, password } = req.body;
+  let { status, data } = await create({ email, password });
+  res.status(status).json(data);
+}
+
+module.exports = { getAllUsers, createUser };
