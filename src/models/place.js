@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/database");
 
-const Enterprise = db.define("Enterprise", {
+const Place = db.define("Place", {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -12,11 +12,11 @@ const Enterprise = db.define("Enterprise", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  enterpriseCategory_id: {
+  placeCategory_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  enterprise_name: {
+  place_name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -34,4 +34,4 @@ const Enterprise = db.define("Enterprise", {
   },
 });
 
-module.exports = Enterprise;
+module.exports = Place;

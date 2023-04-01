@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/database");
 
-const EnterpriseCategory = db.define("EnterpriseCategory", {
+const PlaceCategory = db.define("PlaceCategory", {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -14,4 +14,4 @@ const EnterpriseCategory = db.define("EnterpriseCategory", {
   },
 });
 
-module.exports = EnterpriseCategory;
+module.exports = PlaceCategory;
