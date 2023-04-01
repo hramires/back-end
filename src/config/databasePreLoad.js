@@ -3,13 +3,13 @@ const User = require("../models/user");
 const Roadmap = require("../models/roadmap");
 const Region = require("../models/region");
 const Event = require("../models/event");
-const EnterpriseCategory = require("../models/enterpriseCategory");
-const Enterprise = require("../models/enterprise");
+const PlaceCategory = require("../models/placeCategory");
+const Place = require("../models/place");
 
 // Preload User data into the database
 async function preloadData() {
   try {
-    const enterpriseCategoryData = [
+    const placeCategoryData = [
       {
         name: "Cervejarias",
       },
@@ -39,11 +39,11 @@ async function preloadData() {
       },
     ];
 
-    const enterpriseData = [
+    const placeData = [
       {
         region_id: 1,
-        enterpriseCategory_id: 1,
-        enterprise_name: "Bies Haus Bar",
+        placeCategory_id: 1,
+        place_name: "Bies Haus Bar",
         photos: null,
         opening_hour: "08:00",
         appointment: "Isso é um appointment",
@@ -52,7 +52,7 @@ async function preloadData() {
 
     const roadmapData = [
       {
-        enterprise_id: 1,
+        place_id: 1,
         region_id: 1,
         roadmap_name: "",
         roadmap: "{map}",
@@ -62,8 +62,8 @@ async function preloadData() {
 
     await User.bulkCreate(userData);
     await Region.bulkCreate(regionData);
-    await EnterpriseCategory.bulkCreate(enterpriseCategoryData);
-    await Enterprise.bulkCreate(enterpriseData);
+    await PlaceCategory.bulkCreate(placeCategoryData);
+    await Place.bulkCreate(placeData);
     await Roadmap.bulkCreate(roadmapData);
     await Event.bulkCreate(eventData);
 

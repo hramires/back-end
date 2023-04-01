@@ -1,28 +1,28 @@
-const Enterprise = require("../models/enterprise");
-const EnterpriseCategory = require("../models/enterpriseCategory");
+const Place = require("../models/place");
+const PlaceCategory = require("../models/placeCategory");
 const Event = require("../models/event");
 const Region = require("../models/region");
 const Roadmap = require("../models/roadmap");
 
 const associations = () => {
-  EnterpriseCategory.hasMany(Enterprise, {
-    foreignKey: "enterpriseCategory_id",
+  PlaceCategory.hasMany(Place, {
+    foreignKey: "placeCategory_id",
   });
-  Enterprise.belongsTo(EnterpriseCategory, {
-    foreignKey: "enterpriseCategory_id",
+  Place.belongsTo(PlaceCategory, {
+    foreignKey: "placeCategory_id",
   });
 
-  Enterprise.hasMany(Event, { foreignKey: "enterprise_id" });
-  Event.belongsTo(Enterprise, { foreignKey: "enterprise_id" });
+  Place.hasMany(Event, { foreignKey: "place_id" });
+  Event.belongsTo(Place, { foreignKey: "place_id" });
 
-  Region.hasMany(Enterprise, { foreignKey: "region_id" });
-  Enterprise.belongsTo(Region, { foreignKey: "region_id" });
+  Region.hasMany(Place, { foreignKey: "region_id" });
+  Place.belongsTo(Region, { foreignKey: "region_id" });
 
   Region.hasMany(Event, { foreignKey: "region_id" });
   Event.belongsTo(Region, { foreignKey: "region_id" });
 
-  Enterprise.hasMany(Roadmap, { foreignKey: "enterprise_id" });
-  Roadmap.belongsTo(Enterprise, { foreignKey: "enterprise_id" });
+  Place.hasMany(Roadmap, { foreignKey: "place_id" });
+  Roadmap.belongsTo(Place, { foreignKey: "place_id" });
 
   Region.hasMany(Roadmap, { foreignKey: "region_id" });
   Roadmap.belongsTo(Region, { foreignKey: "region_id" });
