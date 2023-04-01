@@ -13,10 +13,10 @@ async function getAll() {
   } catch (error) {
     if (error instanceof TimeoutError) {
       status = 500;
-      data = "Tempo de execução da query excedeu o limite de tempo";
+      data = "Query execution time exceeded time limit";
     } else {
       status = 500;
-      data = `Erro desconhecido aconteceu: ${error}`;
+      data = `Server Error`;
     }
   }
 
