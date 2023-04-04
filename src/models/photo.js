@@ -1,25 +1,21 @@
-const { Sequelize, DataTypes } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const db = require("../config/database");
 
-const Roadmap = db.define("Roadmap", {
+const Photo = db.define("Photo", {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
   },
-  roadmapPlace_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  name: {
+  photo_url: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
 });
 
-module.exports = Roadmap;
+module.exports = Photo;

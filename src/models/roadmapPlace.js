@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/database");
 
-const PlaceCategory = db.define("PlaceCategory", {
-  category_id: {
+const PlaceRoadmap = db.define("PlaceRoadmap", {
+  roadmap_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -10,6 +10,10 @@ const PlaceCategory = db.define("PlaceCategory", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  order: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
-module.exports = PlaceCategory;
+module.exports = PlaceRoadmap;

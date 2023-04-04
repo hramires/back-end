@@ -1,15 +1,17 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/database");
 
-const PlaceCategory = db.define("PlaceCategory", {
-  category_id: {
+const Category = db.define("Category", {
+  id: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
   },
-  place_id: {
-    type: DataTypes.INTEGER,
+  name: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 });
 
-module.exports = PlaceCategory;
+module.exports = Category;

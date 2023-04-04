@@ -12,24 +12,24 @@ const Place = db.define("Place", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   placeCategory_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  place_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  photos: {
-    type: DataTypes.BLOB,
+  photo_id: {
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   opening_hour: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   appointment: {
-    type: DataTypes.STRING,
+    type: DataTypes.BOOLEAN,
     allowNull: true,
   },
 });
