@@ -5,14 +5,8 @@ const express = require("express");
 
 const router = express.Router();
 
-// GET all places
-router.get("/", placeController.getAllPlaces);
-
 // GET place by id
 router.get("/:id", placeController.getPlace);
-
-//POST place
-router.post("/", placeController.createPlace);
 
 // UPDATE place by id
 router.put("/:id", placeController.updatePlace);

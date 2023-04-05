@@ -1,34 +1,9 @@
 const Place = require("../models/place");
-const { getAll, create, getById } = require("../services/placeService");
-
-async function getAllPlaces(req, res) {
-  let { status, data } = await getAll();
-  res.status(status).json(data);
-}
+const { getById } = require("../services/placeService");
 
 async function getPlace(req, res) {
   const placeId = req.params.id;
   let { status, data } = await getById(placeId);
-  res.status(status).json(data);
-}
-
-async function createPlace(req, res) {
-  const {
-    region_id,
-    placeCategory_id,
-    photo_id,
-    name,
-    openingHour,
-    appointment,
-  } = req.body;
-  let { status, data } = await create({
-    region_id,
-    placeCategory_id,
-    photo_id,
-    name,
-    openingHour,
-    appointment,
-  });
   res.status(status).json(data);
 }
 
@@ -71,8 +46,6 @@ async function removePlace(req, res) {
 }
 
 module.exports = {
-  getAllPlaces,
-  createPlace,
   getPlace,
   updatePlace,
   removePlace,

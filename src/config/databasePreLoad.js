@@ -87,7 +87,7 @@ async function preloadData() {
     await Roadmap.bulkCreate(roadmapData);
     await RoadmapPlace.bulkCreate(roadmapPlaceData);
 
-    console.log("User data preloaded successfully!");
+    console.log("Data preloaded successfully!");
   } catch (error) {
     console.error(error);
   }
