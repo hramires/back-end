@@ -11,6 +11,7 @@ associations();
 
 // Routes
 const placeRouter = require("./src/routes/placeRoute");
+const categoryRouter = require("./src/routes/categoryRoute");
 //const userRouter = require("./src/routes/userRoute");
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 
 //app.use("/user", userRouter);
 app.use("/place", placeRouter);
+app.use("/category", categoryRouter);
 
 db.authenticate()
   .then(() => {

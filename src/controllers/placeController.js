@@ -1,5 +1,11 @@
 const Place = require("../models/place");
 const { getById } = require("../services/placeService");
+const { getAll } = require("../services/placeService");
+
+async function getAllPlaces(req, res) {
+  let { status, data } = await getAll();
+  res.status(status).json(data);
+}
 
 async function getPlace(req, res) {
   const placeId = req.params.id;
@@ -46,6 +52,7 @@ async function removePlace(req, res) {
 }
 
 module.exports = {
+  getAllPlaces,
   getPlace,
   updatePlace,
   removePlace,

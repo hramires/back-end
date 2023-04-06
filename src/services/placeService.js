@@ -1,6 +1,26 @@
 const { TimeoutError, ValidationError } = require("sequelize");
 const Place = require("../models/place");
 
+async function getAll() {
+  let status, data;
+  try {
+    status = 200;
+    data = await Place.findAll({
+      order: [["id", "ASC"]],
+    });
+  } catch (error) {
+    if (error instanceof TimeoutError) {
+      status = 500;
+      data = "Query execution time exceeded time limit";
+    } else {
+      status = 500;
+      data = `Server Error`;
+    }
+  }
+
+  return { status, data };
+}
+
 async function getById(id) {
   let status, data;
   try {
@@ -51,4 +71,4 @@ async function deletePlace(req, res) {
   res.status(status).json(data);
 }
 
-module.exports = { getById, updatePlace, deletePlace };
+module.exports = { getAll, getById, updatePlace, deletePlace };
