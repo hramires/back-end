@@ -8,11 +8,11 @@ const Place = db.define("Place", {
     primaryKey: true,
     autoIncrement: true,
   },
-  region_id: {
-    type: DataTypes.INTEGER,
+  name: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
-  user_id: {
+  region_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -24,7 +24,7 @@ const Place = db.define("Place", {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  opening_hour: {
+  openingHour: {
     type: DataTypes.STRING,
     allowNull: true,
   },

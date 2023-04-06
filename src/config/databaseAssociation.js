@@ -6,7 +6,6 @@ const Roadmap = require("../models/roadmap");
 const Category = require("../models/category");
 const RoadmapPlace = require("../models/roadmapPlace");
 const Photo = require("../models/photo");
-const User = require("../models/user");
 
 const associations = () => {
   Place.belongsTo(Region, { foreignKey: "region_id" });

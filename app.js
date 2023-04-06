@@ -10,7 +10,9 @@ const preload = require("./src/config/databasePreLoad");
 associations();
 
 // Routes
-const userRouter = require("./src/routes/userRoute");
+const placeRouter = require("./src/routes/placeRoute");
+const categoryRouter = require("./src/routes/categoryRoute");
+//const userRouter = require("./src/routes/userRoute");
 
 const app = express();
 const port = 3000;
@@ -18,7 +20,9 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/user", userRouter);
+//app.use("/user", userRouter);
+app.use("/place", placeRouter);
+app.use("/category", categoryRouter);
 
 db.authenticate()
   .then(() => {
@@ -35,4 +39,4 @@ db.authenticate()
     //Preload database data
     preload();
   })
-  .catch((err) => console.log(err));
+  .catch((error) => console.log(error));

@@ -1,13 +1,11 @@
 const { TimeoutError, ValidationError } = require("sequelize");
-const User = require("../models/user");
-
-const bcrypt = require("bcrypt");
+const Category = require("../models/category");
 
 async function getAll() {
   let status, data;
   try {
     status = 200;
-    data = await User.findAll({
+    data = await Category.findAll({
       order: [["id", "ASC"]],
     });
   } catch (error) {
@@ -23,14 +21,12 @@ async function getAll() {
   return { status, data };
 }
 
-async function create({ email, password }) {
-  const hashedPassword = await bcrypt.hash(password, 10);
-
+async function create({ name }) {
   let status, data;
   try {
-    const newUser = await User.create({ email, password: hashedPassword });
+    const newCategory = await Category.create({ name });
     status = 201;
-    data = newUser;
+    data = newCategory;
   } catch (error) {
     if (error instanceof ValidationError) {
       status = 400;

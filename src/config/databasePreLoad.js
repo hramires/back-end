@@ -1,5 +1,4 @@
 // Importing Models
-const User = require("../models/user");
 const Category = require("../models/category");
 const Roadmap = require("../models/roadmap");
 const Photo = require("../models/photo");
@@ -7,7 +6,7 @@ const Region = require("../models/region");
 const Event = require("../models/event");
 const PlaceCategory = require("../models/placeCategory");
 const Place = require("../models/place");
-const PlaceRoadmap = require("../models/roadmapPlace");
+const RoadmapPlace = require("../models/roadmapPlace");
 
 // Preload User data into the database
 async function preloadData() {
@@ -39,13 +38,12 @@ async function preloadData() {
       },
     ];
 
-    const userData = [{ email: "Jorge@email.com", password: "jorge123" }];
-
     const placeData = [
       {
         region_id: 1,
         placeCategory_id: 1,
         place_id: 1,
+        name: "Casa da Edição",
         opening_hour: "08:00",
         appointment: false,
       },
@@ -59,7 +57,7 @@ async function preloadData() {
       },
     ];
 
-    const placeRoadmapData = [
+    const roadmapPlaceData = [
       {
         roadmap_id: 1,
         place_id: 1,
@@ -81,15 +79,14 @@ async function preloadData() {
 
     await Category.bulkCreate(categoryData);
     await Region.bulkCreate(regionData);
-    await User.bulkCreate(userData);
-    await Place.bulkCreate(placeData);
     await Photo.bulkCreate(photoData);
+    await Place.bulkCreate(placeData);
     await PlaceCategory.bulkCreate(placeCategoryData);
-    await Roadmap.bulkCreate(roadmapData);
-    await PlaceRoadmap.bulkCreate(placeRoadmapData);
     await Event.bulkCreate(eventData);
+    await Roadmap.bulkCreate(roadmapData);
+    await RoadmapPlace.bulkCreate(roadmapPlaceData);
 
-    console.log("User data preloaded successfully!");
+    console.log("Data preloaded successfully!");
   } catch (error) {
     console.error(error);
   }
