@@ -5,6 +5,9 @@ const express = require("express");
 
 const router = express.Router();
 
+//POST place
+router.post("/", placeController.postPlace);
+
 // GET all places
 router.get("/", placeController.getAllPlaces);
 

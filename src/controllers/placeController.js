@@ -2,6 +2,30 @@ const Place = require("../models/place");
 const { getById } = require("../services/placeService");
 const { getAll } = require("../services/placeService");
 
+//Criando método postPlace
+async function postPlace(req, res) {
+  const {
+    placeId,
+    region_id,
+    placeCategory_id,
+    photo_id,
+    name,
+    openingHour,
+    appointment,
+  } = req.body;
+  //Verificar se o placeId está em uso.
+  let place = await Place.findByPk(placeId);
+  console.log(place);
+  if (place) {
+    const error = new Error("This id is already in use.");
+    error.statusCode = 404;
+    throw error;
+  };
+
+  place = await place.save();
+  res.status(200).json(place);
+}
+
 async function getAllPlaces(req, res) {
   let { status, data } = await getAll();
   res.status(status).json(data);
@@ -52,6 +76,7 @@ async function removePlace(req, res) {
 }
 
 module.exports = {
+  postPlace,
   getAllPlaces,
   getPlace,
   updatePlace,
