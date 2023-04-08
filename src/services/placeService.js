@@ -1,6 +1,38 @@
 const { TimeoutError, ValidationError } = require("sequelize");
 const Place = require("../models/place");
 
+async function create({
+  region_id,
+  placeCategory_id,
+  photo_id,
+  name,
+  openingHour,
+  appointment,
+}) {
+  let status, data;
+  try {
+    const newPlace = await Place.create({
+      region_id,
+      placeCategory_id,
+      photo_id,
+      name,
+      openingHour,
+      appointment,
+    });
+    status = 201;
+    data = newPlace;
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      status = 400;
+      data = { message: error.errors[0].message };
+    } else {
+      status = 500;
+      data = { message: "Server Error" };
+    }
+  }
+  return { status, data };
+}
+
 async function getAll() {
   let status, data;
   try {
@@ -71,4 +103,4 @@ async function deletePlace(req, res) {
   res.status(status).json(data);
 }
 
-module.exports = { getAll, getById, updatePlace, deletePlace };
+module.exports = { create, getAll, getById, updatePlace, deletePlace };
