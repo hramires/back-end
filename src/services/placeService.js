@@ -7,6 +7,7 @@ async function create({
   photo_id,
   name,
   openingHour,
+  contact,
   appointment,
 }) {
   let status, data;
@@ -17,6 +18,7 @@ async function create({
       photo_id,
       name,
       openingHour,
+      contact,
       appointment,
     });
     status = 201;
@@ -84,6 +86,7 @@ async function updatePlace(req, res) {
     photo_id,
     name,
     openingHour,
+    contact,
     appointment,
   } = req.body;
   let { status, data } = await updateById(placeId, {
@@ -92,6 +95,7 @@ async function updatePlace(req, res) {
     photo_id,
     name,
     openingHour,
+    contact,
     appointment,
   });
   res.status(status).json(data);

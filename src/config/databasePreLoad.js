@@ -45,6 +45,9 @@ async function preloadData() {
         place_id: 1,
         name: "Casa da Edição",
         opening_hour: "08:00",
+        contact: "+5551998231918",
+        latitude: "55",
+        longitude: "11",
         appointment: false,
       },
     ];

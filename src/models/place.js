@@ -28,6 +28,18 @@ const Place = db.define("Place", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  contact: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  latitude: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  longitude: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   appointment: {
     type: DataTypes.BOOLEAN,
     allowNull: true,
