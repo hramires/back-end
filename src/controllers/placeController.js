@@ -13,6 +13,7 @@ async function createPlace(req, res) {
     contact,
     latitude,
     longitude,
+    description,
     appointment,
   } = req.body;
   let { status, data } = await create({
@@ -24,6 +25,7 @@ async function createPlace(req, res) {
     contact,
     latitude,
     longitude,
+    description,
     appointment,
   });
   res.status(status).json(data);
@@ -51,6 +53,7 @@ async function updatePlace(req, res) {
     contact,
     latitude,
     longitude,
+    description,
     appointment,
   } = req.body;
   let place = await Place.findByPk(placeId);
@@ -67,6 +70,7 @@ async function updatePlace(req, res) {
   place.contact = contact;
   place.latitude = latitude;
   place.longitude = longitude;
+  place.description = description;
   place.appointment = appointment;
   place = await place.save();
   res.status(200).json(place);

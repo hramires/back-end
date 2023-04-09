@@ -48,6 +48,7 @@ async function preloadData() {
         contact: "+5551998231918",
         latitude: "55",
         longitude: "11",
+        description: "Casa da edição nova",
         appointment: false,
       },
     ];

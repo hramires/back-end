@@ -40,6 +40,10 @@ const Place = db.define("Place", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   appointment: {
     type: DataTypes.BOOLEAN,
     allowNull: true,
