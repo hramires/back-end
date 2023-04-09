@@ -12,7 +12,7 @@ async function createPlace(req, res) {
     openingHour,
     contact,
     latitude,
-    longidude,
+    longitude,
     appointment,
   } = req.body;
   let { status, data } = await create({
@@ -23,7 +23,7 @@ async function createPlace(req, res) {
     openingHour,
     contact,
     latitude,
-    longidude,
+    longitude,
     appointment,
   });
   res.status(status).json(data);
@@ -50,7 +50,7 @@ async function updatePlace(req, res) {
     openingHour,
     contact,
     latitude,
-    longidude,
+    longitude,
     appointment,
   } = req.body;
   let place = await Place.findByPk(placeId);
@@ -66,7 +66,7 @@ async function updatePlace(req, res) {
   place.openingHour = openingHour;
   place.contact = contact;
   place.latitude = latitude;
-  place.longidude = longidude;
+  place.longitude = longitude;
   place.appointment = appointment;
   place = await place.save();
   res.status(200).json(place);
