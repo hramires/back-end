@@ -75,4 +75,10 @@ async function updateCategory(req, res) {
   res.status(status).json(data);
 }
 
-module.exports = { getAll, create, updateCategory, getById };
+async function deleteCategory(req, res) {
+  const categoryId = req.params.id;
+  let { status, data } = await deleteById(categoryId);
+  res.status(status).json(data);
+}
+
+module.exports = { deleteCategory, getAll, create, updateCategory, getById };

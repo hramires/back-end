@@ -1,5 +1,10 @@
 const Category = require("../models/category");
-const { getAll, create, getById } = require("../services/categoryService");
+const {
+  getAll,
+  create,
+  getById,
+  deleteCategory,
+} = require("../services/categoryService");
 
 async function getAllCategories(req, res) {
   let { status, data } = await getAll();
@@ -36,9 +41,7 @@ async function removeCategory(req, res) {
   const categoryId = req.params.id;
   const category = await Category.findByPk(categoryId);
   if (!category) {
-    const error = new Error("Could not find category.");
-    error.statusCode = 404;
-    throw error;
+    res.status(404).send();
   }
   await category.destroy();
   res.status(204).send();
