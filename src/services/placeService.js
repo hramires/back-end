@@ -10,6 +10,7 @@ async function create({
   contact,
   latitude,
   longitude,
+  description,
   appointment,
 }) {
   let status, data;
@@ -23,6 +24,7 @@ async function create({
       contact,
       latitude,
       longitude,
+      description,
       appointment,
     });
     status = 201;
@@ -93,6 +95,7 @@ async function updatePlace(req, res) {
     contact,
     latitude,
     longitude,
+    description,
     appointment,
   } = req.body;
   let { status, data } = await updateById(placeId, {
@@ -104,6 +107,7 @@ async function updatePlace(req, res) {
     contact,
     latitude,
     longitude,
+    description,
     appointment,
   });
   res.status(status).json(data);
