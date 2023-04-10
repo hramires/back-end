@@ -43,4 +43,36 @@ async function create({ name }) {
   return { status, data };
 }
 
-module.exports = { getAll, create };
+async function getById(id) {
+  let status, data;
+  try {
+    const category = await Category.findByPk(id);
+    if (!category) {
+      status = 404;
+      data = { message: "Category not found" };
+    } else {
+      status = 200;
+      data = category;
+    }
+  } catch (error) {
+    if (error instanceof TimeoutError) {
+      status = 500;
+      data = "Query execution time exceeded time limit";
+    } else {
+      status = 500;
+      data = `Server Error`;
+    }
+  }
+  return { status, data };
+}
+
+async function updateCategory(req, res) {
+  const categoryId = req.params.id;
+  const { name } = req.body;
+  let { status, data } = await updateById(categoryId, {
+    name,
+  });
+  res.status(status).json(data);
+}
+
+module.exports = { getAll, create, updateCategory, getById };
