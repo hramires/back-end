@@ -52,7 +52,7 @@ async function getById(id) {
       data = { message: "Category not found" };
     } else {
       status = 200;
-      data = place;
+      data = category;
     }
   } catch (error) {
     if (error instanceof TimeoutError) {
@@ -75,10 +75,4 @@ async function updateCategory(req, res) {
   res.status(status).json(data);
 }
 
-async function deleteCategory(req, res) {
-  const categoryId = req.params.id;
-  let { status, data } = await deleteById(categoryId);
-  res.status(status).json(data);
-}
-
-module.exports = { getAll, create, updateCategory, deleteCategory, getById };
+module.exports = { getAll, create, updateCategory, getById };
