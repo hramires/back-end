@@ -1,25 +1,25 @@
-const { TimeoutError, ValidationError } = require("sequelize");
 const Place = require("../models/place");
+const { errorHandler } = require("../middleware/errorHandler");
 
-async function create({
-  region_id,
-  placeCategory_id,
-  photo_id,
-  name,
-  openingHour,
-  contact,
-  latitude,
-  longitude,
-  description,
-  appointment,
-}) {
-  let status, data;
+async function create(req, res, next) {
   try {
-    const newPlace = await Place.create({
+    const {
+      name,
       region_id,
       placeCategory_id,
       photo_id,
+      openingHour,
+      contact,
+      latitude,
+      longitude,
+      description,
+      appointment,
+    } = req.body;
+    const place = await Place.create({
       name,
+      region_id,
+      placeCategory_id,
+      photo_id,
       openingHour,
       contact,
       latitude,
@@ -27,96 +27,93 @@ async function create({
       description,
       appointment,
     });
-    status = 201;
-    data = newPlace;
+    //res.status(201).json({ place });
+    return { status: 200, data: { place } };
   } catch (error) {
-    if (error instanceof ValidationError) {
-      status = 400;
-      data = { message: error.errors[0].message };
-    } else {
-      status = 500;
-      data = { message: "Server Error" };
-    }
+    errorHandler(error, req, res, next);
   }
-  return { status, data };
 }
 
-async function getAll() {
-  let status, data;
+async function getAll(req, res, next) {
   try {
-    status = 200;
-    data = await Place.findAll({
-      order: [["id", "ASC"]],
-    });
+    const places = await Place.findAll();
+    return { status: 200, data: { places } };
   } catch (error) {
-    if (error instanceof TimeoutError) {
-      status = 500;
-      data = "Query execution time exceeded time limit";
-    } else {
-      status = 500;
-      data = `Server Error`;
-    }
+    errorHandler(error, req, res, next);
   }
-
-  return { status, data };
 }
 
-async function getById(id) {
-  let status, data;
+async function getById(req, res, next) {
   try {
+    const id = req.params.id;
     const place = await Place.findByPk(id);
-    if (!place) {
-      status = 404;
-      data = { message: "Place not found" };
+    if (place) {
+      return { status: 200, data: { place } };
     } else {
-      status = 200;
-      data = place;
+      return { status: 404, data: { place } };
     }
   } catch (error) {
-    if (error instanceof TimeoutError) {
-      status = 500;
-      data = "Query execution time exceeded time limit";
-    } else {
-      status = 500;
-      data = `Server Error`;
-    }
+    errorHandler(error, req, res, next);
   }
-  return { status, data };
 }
 
-async function updatePlace(req, res) {
-  const placeId = req.params.id;
-  const {
-    region_id,
-    placeCategory_id,
-    photo_id,
-    name,
-    openingHour,
-    contact,
-    latitude,
-    longitude,
-    description,
-    appointment,
-  } = req.body;
-  let { status, data } = await updateById(placeId, {
-    region_id,
-    placeCategory_id,
-    photo_id,
-    name,
-    openingHour,
-    contact,
-    latitude,
-    longitude,
-    description,
-    appointment,
-  });
-  res.status(status).json(data);
+async function update(req, res, next) {
+  try {
+    const id = req.params.id;
+    const place = await Place.findByPk(id);
+    if (place) {
+      const {
+        region_id,
+        placeCategory_id,
+        photo_id,
+        name,
+        openingHour,
+        contact,
+        latitude,
+        longitude,
+        description,
+        appointment,
+      } = req.body;
+      await place.update({
+        region_id: region_id || place.region_id,
+        placeCategory_id: placeCategory_id || place.placeCategory_id,
+        photo_id: photo_id || place.photo_id,
+        name: name || place.name,
+        openingHour: openingHour || place.photo_id,
+        contact: contact || place.contact,
+        latitude: latitude || place.latitude,
+        longitude: longitude || place.longitude,
+        description: description || place.description,
+        appointment: appointment || place.appointment,
+      });
+      return { status: 200, data: { place } };
+    } else {
+      return { status: 404, data: { error: "Place not found" } };
+    }
+  } catch (error) {
+    errorHandler(error, req, res, next);
+  }
 }
 
-async function deletePlace(req, res) {
-  const placeId = req.params.id;
-  let { status, data } = await deleteById(placeId);
-  res.status(status).json(data);
+async function remove(req, res, next) {
+  try {
+    const id = req.params.id;
+    const place = await Place.findByPk(id);
+    if (place) {
+      await place.destroy();
+      return { status: 204, data: {} };
+    } else {
+      return { status: 404, data: { error: "Place not found" } };
+    }
+  } catch (error) {
+    errorHandler(error, req, res, next);
+  }
 }
 
-module.exports = { create, getAll, getById, updatePlace, deletePlace };
+module.exports = {
+  create,
+  getAll,
+  getById,
+  update,
+  remove,
+};
