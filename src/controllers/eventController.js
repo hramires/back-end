@@ -1,6 +1,6 @@
 const Event = require("../models/event");
 const { create } = require("../services/eventService");
-const { getById } = require("/services/eventService");
+const { getById } = require("../services/eventService");
 
 async function createEvent(req, res) {
   const { place_id, name, description, date, time, location } = req.body;
