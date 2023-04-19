@@ -32,6 +32,6 @@ const Event = db.define("Event", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-});
+});  
 
 module.exports = Event;

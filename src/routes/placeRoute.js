@@ -5,7 +5,7 @@ const express = require("express");
 
 const router = express.Router();
 
-//POST place
+// POST a new place
 router.post("/", placeController.createPlace);
 
 // GET all places

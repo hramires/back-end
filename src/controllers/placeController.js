@@ -89,7 +89,7 @@ async function removePlace(req, res) {
 }
 
 module.exports = {
-  createPlace,
+   createPlace,
   getAllPlaces,
   getPlace,
   updatePlace,

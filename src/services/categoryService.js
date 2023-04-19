@@ -1,6 +1,25 @@
 const { TimeoutError, ValidationError } = require("sequelize");
 const Category = require("../models/category");
 
+async function create({ name }) {
+  let status, data;
+  try {
+    const newCategory = await Category.create({ name });
+    status = 201;
+    data = newCategory;
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      status = 400;
+      data = { message: error.errors[0].message };
+    } else {
+      status = 500;
+      data = { message: "Server Error" };
+    }
+  }
+
+  return { status, data };
+}
+
 async function getAll() {
   let status, data;
   try {
@@ -15,28 +34,6 @@ async function getAll() {
     } else {
       status = 500;
       data = `Server Error`;
-    }
-  }
-
-  return { status, data };
-}
-
-async function create({ name }) {
-  let status, data;
-  try {
-    const newCategory = await Category.create({ name });
-    status = 201;
-    data = newCategory;
-  } catch (error) {
-    if (error instanceof ValidationError) {
-      status = 400;
-      data = { message: error.errors[0].message };
-    } else if (error.name === "SequelizeUniqueConstraintError") {
-      status = 400;
-      data = { message: "Email already exists" };
-    } else {
-      status = 500;
-      data = { message: "Server Error" };
     }
   }
 

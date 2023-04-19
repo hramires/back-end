@@ -1,14 +1,14 @@
 const Category = require("../models/category");
-const express = require("express");
 const categoryController = require("../controllers/categoryController");
+const express = require("express");
 
 const router = express.Router();
 
-// GET all category
-router.get("/", categoryController.getAllCategories);
-
 // POST a new category
 router.post("/", categoryController.createCategory);
+
+// GET all category
+router.get("/", categoryController.getAllCategories);
 
 // GET category by id
 router.get("/:id", categoryController.getCategory);
