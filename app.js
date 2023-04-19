@@ -13,7 +13,7 @@ associations();
 const placeRouter = require("./src/routes/placeRoute");
 const categoryRouter = require("./src/routes/categoryRoute");
 const roadmapRouter = require("./src/routes/roadmapRoute");
-//const userRouter = require("./src/routes/userRoute");
+const userRouter = require("./src/routes/userRoute");
 
 
 const app = express();
@@ -22,7 +22,7 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-//app.use("/user", userRouter);
+app.use("/user", userRouter);
 app.use("/place", placeRouter);
 app.use("/category", categoryRouter);
 app.use("/roadmap", roadmapRouter);

@@ -1,16 +1,10 @@
 const { TimeoutError, ValidationError } = require("sequelize");
 const Roadmap = require("../models/roadmap");
 
-/*
-Create:  
-- Como colocar uma lista de empreendimentos
-- Como vincular a apenas uma regiao cadastrada e empreendimentos
-- Como pesquisar empreendimentos cadastrados antes de criar
-*/
 async function create({
     name,
     roadmapPlace_id,
-    description,
+    description
 }) {
     let status, data;
     try {
@@ -53,4 +47,27 @@ async function getAll() {
     return { status, data };
 }
 
-module.exports = { create, getAll}; 
+async function getById(id) {
+    let status, data;
+    try {
+        const roadmap = await Roadmap.findByPk(id);
+        if (!roadmap) {
+            status = 404;
+            data = { message: "Place not found" };
+        } else {
+            status = 200;
+            data = roadmap;
+        }
+    } catch (error) {
+        if (error instanceof TimeoutError) {
+          status = 500;
+          data = "Query execution time exceeded time limit";
+        } else {
+          status = 500;
+          data = `Server Error`;
+        }
+      }
+      return { status, data };
+}
+
+module.exports = { create, getAll, getById }; 
