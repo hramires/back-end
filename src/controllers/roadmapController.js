@@ -1,7 +1,7 @@
 const Roadmap = require("../models/roadmap");
-const PlaceRoadmap = require("../models/roadmapPlace");
+const RoadmapPlace = require("../models/roadmapPlace");
 const { create } = require("../services/roadmapService");
-//create roadmapPlaceService
+const { create } = require("../services/roadmapPlaceService");
 const { getAll } = require("../services/roadmapService");
 
 async function createRoadmap(req, res) {
@@ -14,10 +14,6 @@ async function createRoadmap(req, res) {
         name,
         description,
     });
-    /*let id = data.id;
-    for place in places{
-        createRoadmapPlace
-    }*/
     res.status(status).json(data);
 }
 

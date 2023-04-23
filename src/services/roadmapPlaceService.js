@@ -8,10 +8,10 @@ async function create({
 }) {
     let status, data;
     try {
-        const newRoadmapPlace = await Roadmap.create({
-            name,
-            roadmapPlace_id,
-            description,
+        const newRoadmapPlace = await RoadmapPlace.create({
+            roadmap_id,
+            place_id,
+            order
         }); 
         status = 201
         data = newRoadmap;
@@ -26,3 +26,5 @@ async function create({
     }
     return { status, data };
 }
+
+module.exports = { create }; 
