@@ -6,6 +6,7 @@ const Event = require("../models/event");
 const PlaceCategory = require("../models/placeCategory");
 const Place = require("../models/place");
 const RoadmapPlace = require("../models/roadmapPlace");
+const { sequelize } = require("sequelize");
 
 async function cleanDatabase() {
   try {

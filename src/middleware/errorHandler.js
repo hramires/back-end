@@ -1,5 +1,5 @@
-function errorHandler(err, req, res, next) {
-  console.error(err.stack);
+function errorHandler(error, req, res, next) {
+  console.error(error.stack);
   return { status: 500, data: { message: error.message } };
 }
 

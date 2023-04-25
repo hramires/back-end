@@ -27,7 +27,6 @@ async function create(req, res, next) {
       description,
       appointment,
     });
-    //res.status(201).json({ place });
     return { status: 200, data: { place } };
   } catch (error) {
     errorHandler(error, req, res, next);
