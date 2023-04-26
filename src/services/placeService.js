@@ -15,6 +15,12 @@ async function create(req, res, next) {
       description,
       appointment,
     } = req.body;
+
+    // Validate input
+    if (!name || !region_id || !placeCategory_id) {
+      return { status: 400, data: { error: "Missing required fields" } };
+    }
+
     const place = await Place.create({
       name,
       region_id,
@@ -27,18 +33,28 @@ async function create(req, res, next) {
       description,
       appointment,
     });
-    return { status: 200, data: { place } };
+    return {
+      status: 201,
+      data: { place },
+      message: "Place created successfully",
+    };
   } catch (error) {
-    errorHandler(error, req, res, next);
+    console.error("Error creating place:", error);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
 async function getAll(req, res, next) {
   try {
     const places = await Place.findAll();
-    return { status: 200, data: { places } };
+    return {
+      status: 200,
+      data: { places },
+      message: "Places retrieved successfully",
+    };
   } catch (error) {
-    errorHandler(error, req, res, next);
+    console.error("Error getting places:", error);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
@@ -52,7 +68,8 @@ async function getById(req, res, next) {
       return { status: 404, data: { place } };
     }
   } catch (error) {
-    errorHandler(error, req, res, next);
+    // errorHandler(error, req, res, next);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
@@ -90,7 +107,8 @@ async function update(req, res, next) {
       return { status: 404, data: { error: "Place not found" } };
     }
   } catch (error) {
-    errorHandler(error, req, res, next);
+    // errorHandler(error, req, res, next);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
@@ -105,7 +123,9 @@ async function remove(req, res, next) {
       return { status: 404, data: { error: "Place not found" } };
     }
   } catch (error) {
-    errorHandler(error, req, res, next);
+    return { status: 500, data: { error: "Internal Server Error" } };
+
+    //return errorHandler(error, req, res, next);
   }
 }
 
