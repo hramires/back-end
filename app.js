@@ -12,9 +12,8 @@ associations();
 // Routes
 const placeRouter = require("./src/routes/placeRoute");
 const categoryRouter = require("./src/routes/categoryRoute");
-
-//Middlewares
-const { errorHandler } = require("../back-end/src/middleware/errorHandler");
+const roadmapRouter = require("./src/routes/roadmapRoute");
+//const userRouter = require("./src/routes/userRoute");
 
 const app = express();
 const port = 3000;
@@ -29,6 +28,7 @@ app.use((err, req, res, next) => {
 // Routes
 app.use("/place", placeRouter);
 app.use("/category", categoryRouter);
+app.use("/roadmap", roadmapRouter);
 
 // Database connection
 db.authenticate()
