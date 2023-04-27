@@ -16,7 +16,6 @@ async function create(req, res, next) {
       appointment,
     } = req.body;
 
-    // Validate input
     if (!name || !region_id || !placeCategory_id) {
       return { status: 400, data: { error: "Missing required fields" } };
     }
@@ -116,16 +115,13 @@ async function remove(req, res, next) {
   try {
     const id = req.params.id;
     const place = await Place.findByPk(id);
-    if (place) {
-      await place.destroy();
-      return { status: 204, data: {} };
-    } else {
+    if (!place) {
       return { status: 404, data: { error: "Place not found" } };
     }
+    await place.destroy();
+    return { status: 204, data: {} };
   } catch (error) {
     return { status: 500, data: { error: "Internal Server Error" } };
-
-    //return errorHandler(error, req, res, next);
   }
 }
 
