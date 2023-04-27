@@ -1,6 +1,7 @@
 const Event = require("../models/event");
 const { create } = require("../services/eventService");
 const { getById } = require("../services/eventService");
+const { getAll } = require("../services/eventService");
 
 async function createEvent(req, res) {
   const { place_id, name, description, date, time, location } = req.body;
@@ -21,4 +22,9 @@ async function getEvent(req, res) {
   res.status(status).json(data);
 }
 
-module.exports = { createEvent, getEvent };
+async function getAllEvents(req, res) {
+  const { status, data } = await getAll();
+  res.status(status).json(data);
+}
+
+module.exports = { createEvent, getEvent, getAllEvents };
