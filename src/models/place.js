@@ -16,10 +16,6 @@ const Place = db.define("Place", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  placeCategory_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
   photo_id: {
     type: DataTypes.INTEGER,
     allowNull: true,

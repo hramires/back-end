@@ -1,84 +1,74 @@
-const { TimeoutError, ValidationError } = require("sequelize");
+const { errorHandler } = require("../middleware/errorHandler");
 const Category = require("../models/category");
 
-async function getAll() {
-  let status, data;
+async function create(req, res, next) {
   try {
-    status = 200;
-    data = await Category.findAll({
-      order: [["id", "ASC"]],
-    });
+    const { name } = req.body;
+    const category = await Category.create({ name });
+    return { status: 200, data: { category } };
   } catch (error) {
-    if (error instanceof TimeoutError) {
-      status = 500;
-      data = "Query execution time exceeded time limit";
-    } else {
-      status = 500;
-      data = `Server Error`;
-    }
+    errorHandler(error, req, res, next);
   }
-
-  return { status, data };
 }
 
-async function create({ name }) {
-  let status, data;
+async function getAll(req, res, next) {
   try {
-    const newCategory = await Category.create({ name });
-    status = 201;
-    data = newCategory;
+    const categories = await Category.findAll();
+    return { status: 200, data: { categories } };
   } catch (error) {
-    if (error instanceof ValidationError) {
-      status = 400;
-      data = { message: error.errors[0].message };
-    } else if (error.name === "SequelizeUniqueConstraintError") {
-      status = 400;
-      data = { message: "Email already exists" };
-    } else {
-      status = 500;
-      data = { message: "Server Error" };
-    }
+    errorHandler(error, req, res, next);
   }
-
-  return { status, data };
 }
 
-async function getById(id) {
-  let status, data;
+async function getById(req, res, next) {
   try {
+    const id = req.params.id;
     const category = await Category.findByPk(id);
-    if (!category) {
-      status = 404;
-      data = { message: "Category not found" };
+    if (category) {
+      return { status: 200, data: { category } };
     } else {
-      status = 200;
-      data = category;
+      return { status: 404, data: { category } };
     }
   } catch (error) {
-    if (error instanceof TimeoutError) {
-      status = 500;
-      data = "Query execution time exceeded time limit";
-    } else {
-      status = 500;
-      data = `Server Error`;
-    }
+    errorHandler(error, req, res, next);
   }
-  return { status, data };
 }
 
-async function updateCategory(req, res) {
-  const categoryId = req.params.id;
-  const { name } = req.body;
-  let { status, data } = await updateById(categoryId, {
-    name,
-  });
-  res.status(status).json(data);
+async function update(req, res, next) {
+  try {
+    const id = req.params.id;
+    const category = await Category.findByPk(id);
+    if (category) {
+      const { name } = req.body;
+      await category.update({ name: name });
+      return { status: 200, data: { category } };
+    } else {
+      return { status: 404, data: { error: "Category not found" } };
+    }
+  } catch (error) {
+    errorHandler(error, req, res, next);
+  }
 }
 
-async function deleteCategory(req, res) {
-  const categoryId = req.params.id;
-  let { status, data } = await deleteById(categoryId);
-  res.status(status).json(data);
+async function remove(req, res, next) {
+  try {
+    const id = req.params.id;
+    const category = await Category.findByPk(id);
+    if (category) {
+      await category.destroy();
+      return { status: 204, data: {} };
+    } else {
+      return { status: 404, data: { error: "Category not found" } };
+    }
+  } catch (error) {
+    errorHandler(error, req, res, next);
+  }
 }
 
-module.exports = { deleteCategory, getAll, create, updateCategory, getById };
+module.exports = {
+  create,
+  getAll,
+  getById,
+  update,
+  remove,
+};

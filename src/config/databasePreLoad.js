@@ -7,8 +7,10 @@ const Event = require("../models/event");
 const PlaceCategory = require("../models/placeCategory");
 const Place = require("../models/place");
 const RoadmapPlace = require("../models/roadmapPlace");
+const cleanDatabase = require("../utils/cleanDatabase");
 
 // Preload User data into the database
+
 async function preloadData() {
   try {
     const categoryData = [
@@ -80,6 +82,9 @@ async function preloadData() {
           "Pavilhões da Festa da Uva. R. Ludovíco Cavinato, 1431 - Nossa Sra. da Saúde, Caxias do Sul - RS",
       },
     ];
+
+    // Cleaning data
+    cleanDatabase();
 
     await Category.bulkCreate(categoryData);
     await Region.bulkCreate(regionData);

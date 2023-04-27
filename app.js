@@ -6,24 +6,31 @@ const db = require("./src/config/database");
 const associations = require("./src/config/databaseAssociation");
 const preload = require("./src/config/databasePreLoad");
 
-// Set up associations
+// Set up database association
 associations();
 
 // Routes
 const placeRouter = require("./src/routes/placeRoute");
 const categoryRouter = require("./src/routes/categoryRoute");
-//const userRouter = require("./src/routes/userRoute");
+
+//Middlewares
+const { errorHandler } = require("../back-end/src/middleware/errorHandler");
 
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+//app.use(errorHandler);
+app.use((err, req, res, next) => {
+  errorHandler(err, req, res, next);
+});
 
-//app.use("/user", userRouter);
+// Routes
 app.use("/place", placeRouter);
 app.use("/category", categoryRouter);
 
+// Database connection
 db.authenticate()
   .then(() => {
     console.log("Database connected...");
