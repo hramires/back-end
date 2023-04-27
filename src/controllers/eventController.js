@@ -1,5 +1,6 @@
 const Event = require("../models/event");
 const { create } = require("../services/eventService");
+const { getById } = require("../services/eventService");
 
 async function createEvent(req, res) {
   const { place_id, name, description, date, time, location } = req.body;
@@ -14,4 +15,10 @@ async function createEvent(req, res) {
   res.status(status).json(data);
 }
 
-module.exports = { createEvent };
+async function getEvent(req, res) {
+  const eventId = req.params.id;
+  let { status, data } = await getById(eventId);
+  res.status(status).json(data);
+}
+
+module.exports = { createEvent, getEvent };
