@@ -8,10 +8,6 @@ const Roadmap = db.define("Roadmap", {
     primaryKey: true,
     autoIncrement: true,
   },
-  roadmapPlace_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
