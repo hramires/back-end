@@ -12,7 +12,7 @@ associations();
 // Routes
 const placeRouter = require("./src/routes/placeRoute");
 const categoryRouter = require("./src/routes/categoryRoute");
-const roadmapRouter = require("./src/routes/roadmapRoute");
+const eventRouter = require("./src/routes/eventRoute");
 //const userRouter = require("./src/routes/userRoute");
 
 const app = express();
@@ -28,7 +28,7 @@ app.use((err, req, res, next) => {
 // Routes
 app.use("/place", placeRouter);
 app.use("/category", categoryRouter);
-app.use("/roadmap", roadmapRouter);
+app.use("/event", eventRouter);
 
 // Database connection
 db.authenticate()
