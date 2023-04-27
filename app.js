@@ -12,7 +12,7 @@ associations();
 // Routes
 const placeRouter = require("./src/routes/placeRoute");
 const categoryRouter = require("./src/routes/categoryRoute");
-const eventRouter = require("./src/routes/eventRoute");
+const eventRouter= require("./src/routes/eventRoute");
 //const userRouter = require("./src/routes/userRoute");
 
 const app = express();
