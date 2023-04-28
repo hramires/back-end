@@ -1,4 +1,5 @@
 const Place = require("../models/place");
+const PlaceCategory = require("../models/placeCategory");
 const { errorHandler } = require("../middleware/errorHandler");
 
 async function create(req, res, next) {
@@ -6,8 +7,8 @@ async function create(req, res, next) {
     const {
       name,
       region_id,
-      placeCategory_id,
       photo_id,
+      category_ids,
       openingHour,
       contact,
       latitude,
@@ -16,14 +17,13 @@ async function create(req, res, next) {
       appointment,
     } = req.body;
 
-    if (!name || !region_id || !placeCategory_id) {
+    if (!name || !region_id || !category_ids || category_ids.length === 0) {//se não tiver nome, região ou categoria (valor dentro do array de cateoria); funciona se vier um valor nulo ele deve retornar o erro
       return { status: 400, data: { error: "Missing required fields" } };
     }
 
     const place = await Place.create({
       name,
       region_id,
-      placeCategory_id,
       photo_id,
       openingHour,
       contact,
@@ -32,6 +32,12 @@ async function create(req, res, next) {
       description,
       appointment,
     });
+
+    for (let i = 0; i < category_ids.length; i++) {
+      const category_id = category_ids[i];
+      await PlaceCategory.create({ category_id, place_id: place.id });
+    }
+
     return {
       status: 201,
       data: { place },
@@ -79,7 +85,6 @@ async function update(req, res, next) {
     if (place) {
       const {
         region_id,
-        placeCategory_id,
         photo_id,
         name,
         openingHour,
@@ -91,7 +96,6 @@ async function update(req, res, next) {
       } = req.body;
       await place.update({
         region_id: region_id || place.region_id,
-        placeCategory_id: placeCategory_id || place.placeCategory_id,
         photo_id: photo_id || place.photo_id,
         name: name || place.name,
         openingHour: openingHour || place.photo_id,
