@@ -3,6 +3,9 @@ const Event = require("../models/event");
 
 async function create({ place_id, name, description, date, time, location }) {
   let status, data;
+  if (!name || !date || !time || !location) {
+    return { status: 400, data: { error: "Missing required fields" } };
+  }
   try {
     const newEvent = await Event.create({
       place_id,

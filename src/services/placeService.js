@@ -98,7 +98,7 @@ async function update(req, res, next) {
         region_id: region_id || place.region_id,
         photo_id: photo_id || place.photo_id,
         name: name || place.name,
-        openingHour: openingHour || place.photo_id,
+        openingHour: openingHour || place.openingHour,
         contact: contact || place.contact,
         latitude: latitude || place.latitude,
         longitude: longitude || place.longitude,
