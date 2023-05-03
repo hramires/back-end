@@ -43,7 +43,6 @@ async function preloadData() {
     const placeData = [
       {
         region_id: 1,
-        placeCategory_id: 1,
         place_id: 1,
         name: "Casa da Edição",
         opening_hour: "08:00",

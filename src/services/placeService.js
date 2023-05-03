@@ -5,6 +5,7 @@ async function create(req, res, next) {
   try {
     const {
       name,
+      category_ids,
       region_id,
       photo_id,
       openingHour,
@@ -15,14 +16,13 @@ async function create(req, res, next) {
       appointment,
     } = req.body;
 
-    if (!name || !region_id || !placeCategory_id) {
+    if (!name || !region_id) {
       return { status: 400, data: { error: "Missing required fields" } };
     }
 
     const place = await Place.create({
       name,
       region_id,
-      placeCategory_id,
       photo_id,
       openingHour,
       contact,
@@ -31,11 +31,18 @@ async function create(req, res, next) {
       description,
       appointment,
     });
-    return {
-      status: 201,
-      data: { place },
-      message: "Place created successfully",
-    };
+    
+    let id_place= place.id;
+    try{
+    category_ids.array.forEach(async element => {
+      
+        createPlaceCategory(element, id_place);
+        
+    })
+  }catch(error){
+    remove(id_place);
+    return { status: 500, data: { error: "Internal Server Error placeCategory" } }
+  }
   } catch (error) {
     console.error("Error creating place:", error);
     return { status: 500, data: { error: "Internal Server Error" } };
@@ -78,7 +85,6 @@ async function update(req, res, next) {
     if (place) {
       const {
         region_id,
-        placeCategory_id,
         photo_id,
         name,
         openingHour,
@@ -90,7 +96,6 @@ async function update(req, res, next) {
       } = req.body;
       await place.update({
         region_id: region_id || place.region_id,
-        placeCategory_id: placeCategory_id || place.placeCategory_id,
         photo_id: photo_id || place.photo_id,
         name: name || place.name,
         openingHour: openingHour || place.openingHour,
