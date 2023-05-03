@@ -1,9 +1,10 @@
 const Place = require("../models/place");
-const { getById, deletePlace } = require("../services/placeService");
+const { getById } = require("../services/placeService");
+const { deletePlace } = require("../services/placeService");
 const { getAll } = require("../services/placeService");
 const { create } = require("../services/placeService");
 const { createPlaceCategory } = require("../services/placeCategoryService");
-const { deletePlace } = require("../services/placeService");
+
 
 async function createPlace(req, res) {
   const {
