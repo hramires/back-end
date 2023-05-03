@@ -23,7 +23,7 @@ async function create(req, res, next) {
     const place = await Place.create({
       name,
       region_id,
-      placeCategory_id,
+      //placeCategory_id,
       photo_id,
       openingHour,
       contact,
