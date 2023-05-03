@@ -31,9 +31,6 @@ async function create({ name }) {
     if (error instanceof ValidationError) {
       status = 400;
       data = { message: error.errors[0].message };
-    } else if (error.name === "SequelizeUniqueConstraintError") {
-      status = 400;
-      data = { message: "Email already exists" };
     } else {
       status = 500;
       data = { message: "Server Error" };

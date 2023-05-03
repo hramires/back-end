@@ -3,7 +3,6 @@ const Place = require("../models/place");
 
 async function create({
   region_id,
-  placeCategory_id,
   photo_id,
   name,
   openingHour,
@@ -17,7 +16,6 @@ async function create({
   try {
     const newPlace = await Place.create({
       region_id,
-      placeCategory_id,
       photo_id,
       name,
       openingHour,
@@ -38,6 +36,9 @@ async function create({
       data = { message: "Server Error" };
     }
   }
+
+  
+
   return { status, data };
 }
 
@@ -57,7 +58,6 @@ async function getAll() {
       data = `Server Error`;
     }
   }
-
   return { status, data };
 }
 

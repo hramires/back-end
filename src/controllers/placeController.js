@@ -2,12 +2,13 @@ const Place = require("../models/place");
 const { getById } = require("../services/placeService");
 const { getAll } = require("../services/placeService");
 const { create } = require("../services/placeService");
+const { createPlaceCategory } = require("../services/placeCategoryService");
 
 async function createPlace(req, res) {
   const {
     region_id,
-    placeCategory_id,
     photo_id,
+    category_ids,
     name,
     openingHour,
     contact,
@@ -18,7 +19,6 @@ async function createPlace(req, res) {
   } = req.body;
   let { status, data } = await create({
     region_id,
-    placeCategory_id,
     photo_id,
     name,
     openingHour,
@@ -28,6 +28,24 @@ async function createPlace(req, res) {
     description,
     appointment,
   });
+
+  let id_place = data.id;
+  category_ids.array.forEach(element => {
+    try {
+      createPlaceCategory(element, id_place)
+    } catch (error){
+      if (error instanceof ValidationError) {
+        status = 400;
+        data = { message: error.errors[0].message };
+    } else {
+
+    }
+
+  });
+
+
+
+
   res.status(status).json(data);
 }
 
