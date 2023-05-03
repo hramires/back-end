@@ -4,6 +4,12 @@ const Category = require("../models/category");
 async function create(req, res, next) {
   try {
     const { name } = req.body;
+    if(name == ""){
+      return { status: 400, data: { "error": "Nome da categoria não deve ser vazio." } };
+    }
+    if(name.length <=3){
+      return { status: 400, data: { "error": "Nome da categoria deve possuir 4 ou mais caracteres." } };
+    }
     const category = await Category.create({ name });
     return { status: 200, data: { category } };
   } catch (error) {
@@ -40,6 +46,12 @@ async function update(req, res, next) {
     const category = await Category.findByPk(id);
     if (category) {
       const { name } = req.body;
+      if(name == ""){
+        return { status: 400, data: { "error": "Nome da categoria não deve ser vazio." } };
+      }
+      if(name.length <=3){
+        return { status: 400, data: { "error": "Nome da categoria deve possuir 4 ou mais caracteres." } };
+      }
       await category.update({ name: name });
       return { status: 200, data: { category } };
     } else {
