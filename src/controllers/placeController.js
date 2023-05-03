@@ -1,8 +1,9 @@
 const Place = require("../models/place");
-const { getById } = require("../services/placeService");
+const { getById, deletePlace } = require("../services/placeService");
 const { getAll } = require("../services/placeService");
 const { create } = require("../services/placeService");
 const { createPlaceCategory } = require("../services/placeCategoryService");
+const { deletePlace } = require("../services/placeService");
 
 async function createPlace(req, res) {
   const {
@@ -30,21 +31,15 @@ async function createPlace(req, res) {
   });
 
   let id_place = data.id;
-  category_ids.array.forEach(element => {
+  category_ids.array.forEach(async element => {
     try {
-      createPlaceCategory(element, id_place)
-    } catch (error){
-      if (error instanceof ValidationError) {
-        status = 400;
-        data = { message: error.errors[0].message };
-    } else {
-
+      createPlaceCategory(element, id_place);
+    } catch (error) {
+      deletePlace(id_place);
+      status = 500;
+      data = { message: "Server Error" };
     }
-
   });
-
-
-
 
   res.status(status).json(data);
 }
