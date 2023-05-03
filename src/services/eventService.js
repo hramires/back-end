@@ -1,9 +1,15 @@
 const { TimeoutError, ValidationError } = require("sequelize");
 const Event = require("../models/event");
+const { errorHandler } = require("../middleware/errorHandler");
 
-async function create({ place_id, name, description, date, time, location }) {
-  let status, data;
+async function create(req, res, next) {
   try {
+    const { place_id, name, description, date, time, location } = req.body;
+
+    if (!place_id || !name) {
+      return { status: 400, data: { error: "Missing required fields" } };
+    }
+
     const newEvent = await Event.create({
       place_id,
       name,
@@ -12,61 +18,43 @@ async function create({ place_id, name, description, date, time, location }) {
       time,
       location,
     });
-    status = 201;
-    data = newEvent;
+    return {
+      status: 201,
+      data: { newEvent },
+      message: "Event created successfully",
+    };
   } catch (error) {
-    if (error instanceof ValidationError) {
-      status = 400;
-      data = { message: error.errors[0].message };
-    } else {
-      status = 500;
-      data = { message: "Server Error" };
-    }
+    console.error("Error creating event:", error);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
-  return { status, data };
 }
 
-async function getById(id) {
-  let status, data;
+async function getById(req, res, next) {
   try {
-    const event = await Event.findByPk(id);
-    if (!event) {
-      status = 404;
-      data = { message: "Event not found" };
+    const id = req.params.id;
+    const event = Event.findByPk(id);
+    if (event) {
+      return { status: 200, data: { event } };
     } else {
-      status = 200;
-      data = event;
+      return { status: 404, data: { event } };
     }
   } catch (error) {
-    if (error instanceof TimeoutError) {
-      status = 500;
-      data = "Query execution time exceeded time limit";
-    } else {
-      status = 500;
-      data = `Server Error`;
-    }
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
-  return { status, data };
 }
 
-async function getAll() {
-  let status, data;
+async function getAll(req, res, next) {
   try {
-    status = 200;
-    data = await Event.findAll({
-      order: [["id", "ASC"]],
-    });
+    const events = await Event.findAll();
+    return {
+      status: 200,
+      data: { events },
+      message: "Events retrieved successfully",
+    };
   } catch (error) {
-    if (error instanceof TimeoutError) {
-      status = 500;
-      data = "Query execution time exceeded time limit";
-    } else {
-      status = 500;
-      data = `Server Error`;
-    }
+    console.error("Error getting events:", error);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
-
-  return { status, data };
 }
 
 module.exports = { create, getById, getAll };

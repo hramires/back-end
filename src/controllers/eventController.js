@@ -3,27 +3,18 @@ const { create } = require("../services/eventService");
 const { getById } = require("../services/eventService");
 const { getAll } = require("../services/eventService");
 
-async function createEvent(req, res) {
-  const { place_id, name, description, date, time, location } = req.body;
-  let { status, data } = await create({
-    place_id,
-    name,
-    description,
-    date,
-    time,
-    location,
-  });
+async function createEvent(req, res, next) {
+  let { status, data } = await create(req, res, next);
   res.status(status).json(data);
 }
 
-async function getEvent(req, res) {
-  const eventId = req.params.id;
-  let { status, data } = await getById(eventId);
+async function getEvent(req, res, next) {
+  let { status, data } = await getById(req, res, next);
   res.status(status).json(data);
 }
 
-async function getAllEvents(req, res) {
-  const { status, data } = await getAll();
+async function getAllEvents(req, res, next) {
+  let { status, data } = await getAll(req, res, next);
   res.status(status).json(data);
 }
 
