@@ -1,55 +1,40 @@
 const Category = require("../models/category");
 const {
-  getAll,
   create,
+  getAll,
   getById,
-  deleteCategory,
+  update,
+  remove,
 } = require("../services/categoryService");
 
-async function getAllCategories(req, res) {
+async function getAllCategories(req, res, next) {
   let { status, data } = await getAll();
   res.status(status).json(data);
 }
 
-async function createCategory(req, res) {
-  const { name } = req.body;
-  let { status, data } = await create({ name });
+async function createCategory(req, res, next) {
+  let { status, data } = await create(req, res, next);
   res.status(status).json(data);
 }
 
-async function getCategory(req, res) {
-  const categoryId = req.params.id;
-  let { status, data } = await getById(categoryId);
+async function getCategory(req, res, next) {
+  let { status, data } = await getById(req, res, next);
   res.status(status).json(data);
 }
 
-async function updateCategory(req, res) {
-  const categoryId = req.params.id;
-  const { name } = req.body;
-  let category = await Category.findByPk(categoryId);
-  if (!category) {
-    const error = new Error("Could not find category.");
-    error.statusCode = 404;
-    throw error;
-  }
-  category.name = name;
-  category = await category.save();
-  res.status(200).json(category);
+async function updateCategory(req, res, next) {
+  let { status, data } = await update(req, res, next);
+  res.status(status).json(data);
 }
 
-async function removeCategory(req, res) {
-  const categoryId = req.params.id;
-  const category = await Category.findByPk(categoryId);
-  if (!category) {
-    res.status(404).send();
-  }
-  await category.destroy();
-  res.status(204).send();
+async function removeCategory(req, res, next) {
+  let { status, data } = await remove(req, res, next);
+  res.status(status).json(data);
 }
 module.exports = {
+  createCategory,
+  getAllCategories,
   getCategory,
   updateCategory,
-  getAllCategories,
-  createCategory,
   removeCategory,
 };
