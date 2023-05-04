@@ -26,7 +26,7 @@ async function createPlaceCategory(category_id, place_id) {
 async function getAllByPlaceId(place_id) {
   try {
     const placeCategories = await PlaceCategory.findAll({
-      where: { place_id },
+      where: { place_id: place_id },
     });
     return {
       status: 200,
