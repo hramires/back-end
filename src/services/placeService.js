@@ -1,6 +1,9 @@
 const Place = require("../models/place");
 const PlaceCategory = require("../models/placeCategory");
 const { errorHandler } = require("../middleware/errorHandler");
+const { where } = require("sequelize");
+const createPlaceCategory = require("../services/placeCategoryService");
+const getAllByPlaceId = require("../services/placeCategoryService");
 
 async function create(req, res, next) {
   try {
@@ -17,7 +20,8 @@ async function create(req, res, next) {
       appointment,
     } = req.body;
 
-    if (!name || !region_id || !category_ids || category_ids.length === 0) {//se não tiver nome, região ou categoria (valor dentro do array de cateoria); funciona se vier um valor nulo ele deve retornar o erro
+    if (!name || !region_id || !category_ids || category_ids.length === 0) {
+      //se não tiver nome, região ou categoria (valor dentro do array de cateoria); funciona se vier um valor nulo ele deve retornar o erro
       return { status: 400, data: { error: "Missing required fields" } };
     }
 
@@ -32,12 +36,16 @@ async function create(req, res, next) {
       description,
       appointment,
     });
-
-    for (let i = 0; i < category_ids.length; i++) {
-      const category_id = category_ids[i];
-      await PlaceCategory.create({ category_id, place_id: place.id });
+    try {
+      for (let i = 0; i < category_ids.length; i++) {
+        const category_id = category_ids[i];
+        await createPlaceCategory(category_id, place.id);
+      }
+    } catch (error) {
+      remove(place.id);
+      console.error("Error creating place:", error);
+      return { status: 500, data: { error: "Internal Server Error" } };
     }
-
     return {
       status: 201,
       data: { place },
@@ -67,12 +75,16 @@ async function getById(req, res, next) {
   try {
     const id = req.params.id;
     const place = await Place.findByPk(id);
+    const categories = await getAllByPlaceId(place.id);
+
     if (place) {
-      return { status: 200, data: { place } };
+      return { status: 200, data: { place, categories } };
     } else {
-      return { status: 404, data: { place } };
+      return { status: 404, data: { place, categories } };
     }
   } catch (error) {
+    console.error("Error creating place:", error);
+
     // errorHandler(error, req, res, next);
     return { status: 500, data: { error: "Internal Server Error" } };
   }
