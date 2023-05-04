@@ -28,9 +28,13 @@ async function getAllByPlaceId(place_id) {
     const placeCategories = await PlaceCategory.findAll({
       where: { place_id: place_id },
     });
+    const listCategoriesId = [];
+     placeCategories.forEach(element =>{
+      listCategoriesId.push(element.dataValues.category_id);
+    });
     return {
       status: 200,
-      data: { placeCategories },
+      data: { listCategoriesId },
       message: "PlaceCategories retrieved successfully",
     };
   } catch (error) {

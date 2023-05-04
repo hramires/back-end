@@ -2,8 +2,7 @@ const Place = require("../models/place");
 const PlaceCategory = require("../models/placeCategory");
 const { errorHandler } = require("../middleware/errorHandler");
 const { where } = require("sequelize");
-const createPlaceCategory = require("../services/placeCategoryService");
-const getAllByPlaceId = require("../services/placeCategoryService");
+const { createPlaceCategory, getAllByPlaceId } = require("../services/placeCategoryService");
 
 async function create(req, res, next) {
   try {
@@ -59,7 +58,9 @@ async function create(req, res, next) {
 
 async function getAll(req, res, next) {
   try {
-    const places = await Place.findAll();
+    const places = await Place.findAll({
+      include: 'PlaceCategories' 
+    });
     return {
       status: 200,
       data: { places },
@@ -75,7 +76,7 @@ async function getById(req, res, next) {
   try {
     const id = req.params.id;
     const place = await Place.findByPk(id);
-    const categories = await getAllByPlaceId(place.id);
+    const categories = (await getAllByPlaceId(place.id)).data;
 
     if (place) {
       return { status: 200, data: { place, categories } };
