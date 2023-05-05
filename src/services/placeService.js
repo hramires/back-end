@@ -77,16 +77,25 @@ async function getById(req, res, next) {
     const id = req.params.id;
     const place = await Place.findByPk(id);
     const categories = (await getAllByPlaceId(place.id)).data;
+    const categoriesObj = [];
+
+    for( i=0; i<categories.listCategoriesId.length; i++){
+      categoriesObj.push(await Category.findByPk(categories.listCategoriesId[i]));
+    }
 
     if (place) {
-      return { status: 200, data: { place, categories } };
+      return { status: 200, data: {
+        place,
+        'categories': categoriesObj
+      } };
     } else {
-      return { status: 404, data: { place, categories } };
+      return { status: 404, data: {
+        place,
+        'categories': categoriesObj
+      } };
     }
   } catch (error) {
     console.error("Error creating place:", error);
-
-    // errorHandler(error, req, res, next);
     return { status: 500, data: { error: "Internal Server Error" } };
   }
 }

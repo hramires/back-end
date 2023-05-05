@@ -1,4 +1,3 @@
-const Roadmap = require("../models/roadmap");
 const { getById, create } = require("../services/roadmapService");
 
 async function getRoadmap(req, res) {

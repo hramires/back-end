@@ -1,7 +1,7 @@
-const { TimeoutError } = require("sequelize");
 const Roadmap = require("../models/roadmap");
-const RoadmapPlace = require("../models/roadmapPlace");
+const Place = require("../models/place");
 const { createRoadmapPlace, getAllByRoadmapId } = require("../services/roadmapPlaceService");
+
 
 async function create(req, res, next) {
   try {
@@ -26,41 +26,47 @@ async function create(req, res, next) {
       }
     } catch (error) {
       remove(roadmap.id);
-      console.error("Error creating place:", error);
+      console.error("Error creating roadmap:", error);
       return { status: 500, data: { error: "Internal Server Error" } };
     }
     return {
       status: 201,
       data: { roadmap },
-      message: "Place created successfully",
+      message: "Roadmap created successfully",
     };
   } catch (error) {
-    console.error("Error creating place:", error);
+    console.error("Error creating roadmap:", error);
     return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
-async function getById(id) {
-    let status, data;
-    try {
-        const roadmap = await Roadmap.findByPk(id);
-        if (!roadmap) {
-            status = 404;
-            data = { message: "Roadmap not found" };
-        } else {
-            status = 200;
-            data = roadmap;
-        }
-    } catch (error) {
-        if (error instanceof TimeoutError) {
-            status = 500;
-            data = "Query execution time exceeded time limit";
-        } else {
-            status = 500;
-            data = `Server Error`;
-        }
+async function getById(req, res, next) {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    const roadmap = await Roadmap.findByPk(id);
+    const places = (await getAllByRoadmapId(roadmap.id)).data;
+    const placesObj = [];
+
+    for( i = 0; i < places.listPlacesId.length; i++){
+      placesObj.push(await Place.findByPk(places.listPlacesId[i]));
     }
-    return { status, data };
+
+    if (roadmap) {
+      return { status: 200, data: {
+        roadmap,
+        'places': placesObj
+      } };
+    } else {
+      return { status: 404, data: {
+        roadmap,
+        'places': placesObj
+      } };
+    }
+  } catch (error) {
+    console.error("Error creating roadmap:", error);
+    return { status: 500, data: { error: "Internal Server Error" } };
+  }
 }
 
 module.exports = { getById, create };
