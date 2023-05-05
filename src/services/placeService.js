@@ -3,6 +3,7 @@ const PlaceCategory = require("../models/placeCategory");
 const { errorHandler } = require("../middleware/errorHandler");
 const { where } = require("sequelize");
 const { createPlaceCategory, getAllByPlaceId } = require("../services/placeCategoryService");
+const Category = require("../models/category");
 
 async function create(req, res, next) {
   try {
@@ -59,11 +60,24 @@ async function create(req, res, next) {
 async function getAll(req, res, next) {
   try {
     const places = await Place.findAll({
-      include: 'PlaceCategories' 
+      include: [{ model: PlaceCategory , include: Category}]
     });
+    const retorno = [];
+    
+    for( i=0; i<places.length; i++){
+      const categoriesList = [];
+      //console.log(places[i]);
+      for(j=0; j<places[i].PlaceCategories.length; j++){
+      await Category.findByPk(places[i].PlaceCategories[j].Category.id)
+        console.log("loop dentro");
+    }
+      retorno.push({place: places[i] , Categories: categoriesList})
+      console.log(categoriesList);
+    }
+
     return {
       status: 200,
-      data: { places },
+      data: { retorno },
       message: "Places retrieved successfully",
     };
   } catch (error) {
@@ -77,11 +91,23 @@ async function getById(req, res, next) {
     const id = req.params.id;
     const place = await Place.findByPk(id);
     const categories = (await getAllByPlaceId(place.id)).data;
+    const categoriesObj = [];
+
+    for( i=0; i<categories.listCategoriesId.length; i++){
+      categoriesObj.push(await Category.findByPk(categories.listCategoriesId[i]));
+    }
+
 
     if (place) {
-      return { status: 200, data: { place, categories } };
+      return { status: 200, data: {
+        place,
+        'categories': categoriesObj
+      } };
     } else {
-      return { status: 404, data: { place, categories } };
+      return { status: 404, data: {
+        place,
+        'categories': categoriesObj
+      } };
     }
   } catch (error) {
     console.error("Error creating place:", error);
