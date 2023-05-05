@@ -60,25 +60,32 @@ async function create(req, res, next) {
 async function getAll(req, res, next) {
   try {
     const onlyPlaces= await Place.findAll();
-    const places = await Place.findAll({
-      include:  PlaceCategory 
-    });
+    
     const retorno = [];
       let categoriesList = [];
-    for( i=0; i<places.length; i++){
+
+    for( i=0; i<onlyPlaces.length; i++){
+      const PlaceCategories = await PlaceCategory.findAll({
+        where: {place_id: onlyPlaces[i].id}
+      });
 
       categoriesList = [];
 
-      for(j=0; j<places[i].PlaceCategories.length; j++){
+      if(PlaceCategories.length!==0){
 
-      categoriesList.push( await Category.findByPk(places[i].PlaceCategories[j].category_id))
+      for(j=0; j<PlaceCategories.length; j++){
+
+      categoriesList.push( await Category.findByPk(PlaceCategories[j].category_id));
 
     }
-      retorno.push({place: onlyPlaces[i] , Categories: categoriesList})
+      retorno.push({place: onlyPlaces[i] , categories: categoriesList});
+    }else{
+      retorno.push({place: onlyPlaces[i] , categories: []});
     }
+  }
     return {
       status: 200,
-      data: { retorno },
+      data: retorno,
       message: "Places retrieved successfully",
     };
   } catch (error) {
