@@ -1,5 +1,44 @@
 const { TimeoutError } = require("sequelize");
 const Roadmap = require("../models/roadmap");
+const RoadmapPlace = require("../models/roadmapPlace");
+const { createRoadmapPlace, getAllByRoadmapId } = require("../services/roadmapPlaceService");
+
+async function create(req, res, next) {
+  try {
+    const {
+      name,
+      description,
+      place_ids
+    } = req.body;
+  
+    if (!name || !description || !place_ids || place_ids.length === 0) {
+      return { status: 400, data: { error: "Missing required fields" } };
+    }
+  
+    const roadmap = await Roadmap.create({
+      name,
+      description
+    });
+    try {
+      for (let i = 0; i < place_ids.length; i++) {
+        const place_id = place_ids[i];
+        await createRoadmapPlace(place_id, roadmap.id);
+      }
+    } catch (error) {
+      remove(roadmap.id);
+      console.error("Error creating place:", error);
+      return { status: 500, data: { error: "Internal Server Error" } };
+    }
+    return {
+      status: 201,
+      data: { roadmap },
+      message: "Place created successfully",
+    };
+  } catch (error) {
+    console.error("Error creating place:", error);
+    return { status: 500, data: { error: "Internal Server Error" } };
+  }
+}
 
 async function getById(id) {
     let status, data;
@@ -24,4 +63,4 @@ async function getById(id) {
     return { status, data };
 }
 
-module.exports = { getById };
+module.exports = { getById, create };

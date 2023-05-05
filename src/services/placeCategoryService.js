@@ -42,4 +42,5 @@ async function getAllByPlaceId(place_id) {
     return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
+
 module.exports = { createPlaceCategory, getAllByPlaceId };

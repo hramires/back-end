@@ -1,6 +1,5 @@
-const {
-    getById
-} = require("../services/roadmapService");
+const Roadmap = require("../models/roadmap");
+const { getById, create } = require("../services/roadmapService");
 
 async function getRoadmap(req, res) {
     const roadmapId = req.params.id;
@@ -8,4 +7,9 @@ async function getRoadmap(req, res) {
     res.status(status).json(data);
 }
 
-module.exports = { getRoadmap };
+async function createRoadmap(req, res, next) {
+    let { status, data } = await create(req, res, next);
+    res.status(status).json(data);
+}
+
+module.exports = { getRoadmap, createRoadmap };
