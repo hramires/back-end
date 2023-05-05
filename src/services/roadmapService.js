@@ -2,8 +2,7 @@ const Roadmap = require("../models/roadmap");
 const Place = require("../models/place");
 const { createRoadmapPlace, getAllByRoadmapId } = require("../services/roadmapPlaceService");
 
-
-async function create(req, res, next) {
+async function create(req) {
   try {
     const {
       name,
@@ -22,7 +21,7 @@ async function create(req, res, next) {
     try {
       for (let i = 0; i < place_ids.length; i++) {
         const place_id = place_ids[i];
-        await createRoadmapPlace(place_id, roadmap.id);
+        await createRoadmapPlace(roadmap.id, place_id, i);
       }
     } catch (error) {
       remove(roadmap.id);
@@ -42,8 +41,7 @@ async function create(req, res, next) {
 
 async function getById(req, res, next) {
   try {
-    const id = req.params.id;
-    console.log(id);
+    const id = req;
     const roadmap = await Roadmap.findByPk(id);
     const places = (await getAllByRoadmapId(roadmap.id)).data;
     const placesObj = [];

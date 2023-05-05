@@ -1,7 +1,7 @@
 const { ValidationError } = require("sequelize");
 const RoadmapPlace = require("../models/roadmapPlace");
 
-async function createRoadmapPlace(roadmap_id, place_id,order) {
+async function createRoadmapPlace(roadmap_id, place_id, order) {
   let status, data;
   try {
     const newRoadmapPlace = await RoadmapPlace.create({
@@ -30,7 +30,7 @@ async function getAllByRoadmapId(roadmap_id) {
         where: { roadmap_id: roadmap_id },
       });
       const listPlacesId = [];
-       RoadmapPlace.forEach(element =>{
+       roadmapPlace.forEach(element =>{
         listPlacesId.push(element.dataValues.place_id);
       });
       return {
