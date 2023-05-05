@@ -59,22 +59,23 @@ async function create(req, res, next) {
 
 async function getAll(req, res, next) {
   try {
+    const onlyPlaces= await Place.findAll();
     const places = await Place.findAll({
-      include: [{ model: PlaceCategory , include: Category}]
+      include:  PlaceCategory 
     });
     const retorno = [];
-    
+      let categoriesList = [];
     for( i=0; i<places.length; i++){
-      const categoriesList = [];
-      //console.log(places[i]);
-      for(j=0; j<places[i].PlaceCategories.length; j++){
-      await Category.findByPk(places[i].PlaceCategories[j].Category.id)
-        console.log("loop dentro");
-    }
-      retorno.push({place: places[i] , Categories: categoriesList})
-      console.log(categoriesList);
-    }
 
+      categoriesList = [];
+
+      for(j=0; j<places[i].PlaceCategories.length; j++){
+
+      categoriesList.push( await Category.findByPk(places[i].PlaceCategories[j].category_id))
+
+    }
+      retorno.push({place: onlyPlaces[i] , Categories: categoriesList})
+    }
     return {
       status: 200,
       data: { retorno },
