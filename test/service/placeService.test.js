@@ -336,8 +336,8 @@ describe("placeService", () => {
 
     test("should return 500 status if an error occurs", async () => {
       // Arrange
-      jest
-        .spyOn(Place, "findByPk")
+      
+        jest.spyOn(Place, "findByPk")
         .mockRejectedValue(new Error("Database error"));
 
       // Act

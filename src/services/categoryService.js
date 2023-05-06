@@ -13,7 +13,8 @@ async function create(req, res, next) {
     const category = await Category.create({ name });
     return { status: 200, data: { category } };
   } catch (error) {
-    errorHandler(error, req, res, next);
+    //errorHandler(error, req, res, next);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
@@ -22,7 +23,8 @@ async function getAll(req, res, next) {
     const categories = await Category.findAll();
     return { status: 200, data: { categories } };
   } catch (error) {
-    errorHandler(error, req, res, next);
+    //errorHandler(error, req, res, next);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
@@ -36,7 +38,8 @@ async function getById(req, res, next) {
       return { status: 404, data: { category } };
     }
   } catch (error) {
-    errorHandler(error, req, res, next);
+    //errorHandler(error, req, res, next);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
@@ -58,7 +61,8 @@ async function update(req, res, next) {
       return { status: 404, data: { error: "Category not found" } };
     }
   } catch (error) {
-    errorHandler(error, req, res, next);
+    //errorHandler(error, req, res, next);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
@@ -73,7 +77,8 @@ async function remove(req, res, next) {
       return { status: 404, data: { error: "Category not found" } };
     }
   } catch (error) {
-    errorHandler(error, req, res, next);
+    //errorHandler(error, req, res, next);
+    return { status: 500, data: { error: "Internal Server Error" } };
   }
 }
 
