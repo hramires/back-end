@@ -1,5 +1,6 @@
 const Roadmap = require("../models/roadmap");
 const Place = require("../models/place");
+const RoadmapPlace = require("../models/roadmapPlace");
 const { createRoadmapPlace, getAllByRoadmapId } = require("../services/roadmapPlaceService");
 
 async function create(req) {
@@ -67,4 +68,37 @@ async function getById(req, res, next) {
   }
 }
 
-module.exports = { getById, create };
+async function getAll() {
+  try {
+    const onlyRoadmaps = await Roadmap.findAll();
+    const retorno = [];
+    let placesList = [];
+
+    for( i = 0; i < onlyRoadmaps.length; i++){
+      const roadmapPlace = await RoadmapPlace.findAll({
+        where: {roadmap_id: onlyRoadmaps[i].id}
+      });
+
+      placesList = [];
+
+      if(roadmapPlace.length !== 0){
+        for(j = 0; j < roadmapPlace.length; j++){
+          placesList.push( await Place.findByPk(roadmapPlace[j].place_id));
+        }
+        retorno.push({roadmap: onlyRoadmaps[i], places: placesList});
+      } else {
+      retorno.push({roadmap: onlyRoadmaps[i], places: []});
+    }
+  }
+    return {
+      status: 200,
+      data: retorno,
+      message: "Roadmap retrieved successfully",
+    };
+  } catch (error) {
+    console.error("Error getting roadmap:", error);
+    return { status: 500, data: { error: "Internal Server Error" } };
+  }
+}
+
+module.exports = { getById, create, getAll };
