@@ -10,4 +10,8 @@ router.get("/:id", eventController.getEvent);
 
 router.get("/", eventController.getAllEvents);
 
+router.delete("/:id", eventController.removeEvent);
+
+router.put("/:id", eventController.updateEvent);
+
 module.exports = router;
