@@ -6,24 +6,20 @@ const Event = require("../models/event");
 const PlaceCategory = require("../models/placeCategory");
 const Place = require("../models/place");
 const RoadmapPlace = require("../models/roadmapPlace");
-const { sequelize } = require("sequelize");
+const db = require("../config/database");
 
 async function cleanDatabase() {
   try {
-    // DISABLE FOREIGN KEYS
-    await sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
 
-    await Category.destroy({ truncate: true });
-    await Roadmap.destroy({ truncate: true });
-    await Photo.destroy({ truncate: true });
-    await Region.destroy({ truncate: true });
-    await Event.destroy({ truncate: true });
-    await PlaceCategory.destroy({ truncate: true });
-    await Place.destroy({ truncate: true });
-    await RoadmapPlace.destroy({ truncate: true });
+    await PlaceCategory.destroy({ truncate: { cascade: true } });
+    await RoadmapPlace.destroy({ truncate: { cascade: true } });
+    await Category.destroy({ truncate: { cascade: true } });
+    await Roadmap.destroy({ truncate: { cascade: true } });
+    await Event.destroy({ truncate: { cascade: true } });
+    await Place.destroy({ truncate: { cascade: true } });
+    await Photo.destroy({ truncate: { cascade: true } });
+    await Region.destroy({ truncate: { cascade: true } });
 
-    // ENABLE FOREIGN KEYS
-    await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
     console.log("Database cleaned successfully!");
   } catch (error) {
     console.error(error);

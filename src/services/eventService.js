@@ -8,10 +8,9 @@ async function create({
   startDate,
   endDate,
   openingHour,
-  location,
 }) {
   let status, data;
-  if (!name || !location) {
+  if (!name || !startDate || !endDate) {
     return { status: 400, data: { error: "Missing required fields" } };
   }
   try {
@@ -22,7 +21,6 @@ async function create({
       startDate,
       endDate,
       openingHour,
-      location,
     });
     status = 201;
     data = newEvent;
@@ -32,7 +30,7 @@ async function create({
       data = { message: error.errors[0].message };
     } else {
       status = 500;
-      data = { message: "Server Error" };
+      data = { message: error };
     }
   }
   return { status, data };
@@ -65,9 +63,7 @@ async function getAll() {
   let status, data;
   try {
     status = 200;
-    data = await Event.findAll({
-      order: [["id", "ASC"]],
-    });
+    data = await Event.findAll();
   } catch (error) {
     if (error instanceof TimeoutError) {
       status = 500;
@@ -93,7 +89,6 @@ async function update(req, res, next) {
         startDate,
         endDate,
         openingHour,
-        location,
       } = req.body;
       await event.update({
         place_id: place_id || event.place_id,
@@ -102,7 +97,6 @@ async function update(req, res, next) {
         startDate: startDate || event.startDate,
         endDate: endDate || event.endDate,
         openingHour: openingHour || event.openingHour,
-        location: location || event.location,
       });
       return { status: 200, data: { event } };
     } else {

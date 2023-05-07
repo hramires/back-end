@@ -6,14 +6,14 @@ const { update } = require("../services/eventService");
 const { remove } = require("../services/eventService");
 
 async function createEvent(req, res) {
-  const { place_id, name, description, date, time, location } = req.body;
+  const { place_id, name, description, startDate, endDate, openingHour } = req.body;
   let { status, data } = await create({
     place_id,
     name,
     description,
-    date,
-    time,
-    location,
+    startDate,
+    endDate,
+    openingHour,
   });
   res.status(status).json(data);
 }

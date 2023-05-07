@@ -18,7 +18,7 @@ const Event = db.define("Event", {
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   startDate: {
     type: DataTypes.DATE,
@@ -30,11 +30,7 @@ const Event = db.define("Event", {
   },
   openingHour: {
     type: DataTypes.STRING,
-    allowNull: false,
-  },
-  location: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
 });
 
