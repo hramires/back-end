@@ -1,6 +1,6 @@
 const Place = require("../models/place");
 const PlaceCategory = require("../models/placeCategory");
-const { errorHandler } = require("../middleware/errorHandler");
+//const { errorHandler } = require("../middleware/errorHandler");
 const { where } = require("sequelize");
 const {
   createPlaceCategory,
@@ -129,8 +129,6 @@ async function getById(req, res, next) {
     }
   } catch (error) {
     console.error("Error creating place:", error);
-
-    // errorHandler(error, req, res, next);
     return { status: 500, data: { error: "Internal Server Error" } };
   }
 }

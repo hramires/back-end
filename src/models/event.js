@@ -20,11 +20,15 @@ const Event = db.define("Event", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  date: {
+  startDate: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  time: {
+  endDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  openingHour: {
     type: DataTypes.STRING,
     allowNull: false,
   },
