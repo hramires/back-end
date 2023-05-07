@@ -1,12 +1,11 @@
 const Place = require("../models/place");
-const { errorHandler } = require("../middleware/errorHandler");
+//const { errorHandler } = require("../middleware/errorHandler");
 
 async function create(req, res, next) {
   try {
     const {
       name,
       region_id,
-      placeCategory_id,
       photo_id,
       openingHour,
       contact,
@@ -23,7 +22,6 @@ async function create(req, res, next) {
     const place = await Place.create({
       name,
       region_id,
-      //placeCategory_id,
       photo_id,
       openingHour,
       contact,
