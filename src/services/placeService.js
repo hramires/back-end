@@ -5,7 +5,9 @@ const { where } = require("sequelize");
 const {
   createPlaceCategory,
   getAllByPlaceId,
+  updatePlaceCategory,
 } = require("../services/placeCategoryService");
+const Category = require("../models/category");
 
 async function create(req, res, next) {
   try {
@@ -61,12 +63,32 @@ async function create(req, res, next) {
 
 async function getAll(req, res, next) {
   try {
-    const places = await Place.findAll({
-      include: "PlaceCategories",
-    });
+    const onlyPlaces = await Place.findAll();
+
+    const retorno = [];
+    let categoriesList = [];
+
+    for (i = 0; i < onlyPlaces.length; i++) {
+      const PlaceCategories = await PlaceCategory.findAll({
+        where: { place_id: onlyPlaces[i].id },
+      });
+
+      categoriesList = [];
+
+      if (PlaceCategories.length !== 0) {
+        for (j = 0; j < PlaceCategories.length; j++) {
+          categoriesList.push(
+            await Category.findByPk(PlaceCategories[j].category_id)
+          );
+        }
+        retorno.push({ place: onlyPlaces[i], categories: categoriesList });
+      } else {
+        retorno.push({ place: onlyPlaces[i], categories: [] });
+      }
+    }
     return {
       status: 200,
-      data: { places },
+      data: retorno,
       message: "Places retrieved successfully",
     };
   } catch (error) {
@@ -119,6 +141,7 @@ async function update(req, res, next) {
       const {
         region_id,
         photo_id,
+        category_ids,
         name,
         openingHour,
         contact,
@@ -127,6 +150,15 @@ async function update(req, res, next) {
         description,
         appointment,
       } = req.body;
+
+      let statusObj = await updatePlaceCategory(id, category_ids);
+      if (statusObj.status == 500) {
+        return {
+          status: statusObj.status,
+          data: { error: statusObj.data.error },
+        };
+      }
+
       await place.update({
         region_id: region_id || place.region_id,
         photo_id: photo_id || place.photo_id,
@@ -138,6 +170,7 @@ async function update(req, res, next) {
         description: description || place.description,
         appointment: appointment || place.appointment,
       });
+
       return { status: 200, data: { place } };
     } else {
       return { status: 404, data: { error: "Place not found" } };
