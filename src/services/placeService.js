@@ -15,7 +15,7 @@ async function create(req, res, next) {
       appointment,
     } = req.body;
 
-    if (!name || !region_id || !placeCategory_id) {
+    if (!name || !region_id) {
       return { status: 400, data: { error: "Missing required fields" } };
     }
 

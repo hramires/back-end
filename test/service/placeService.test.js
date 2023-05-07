@@ -17,7 +17,7 @@ describe("placeService", () => {
     mockPlace = {
       name: "Test Place",
       region_id: 1,
-      placeCategory_id: 1,
+      //placeCategory_id: 1,
       photo_id: null,
       openingHour: null,
       contact: null,
@@ -59,7 +59,7 @@ describe("placeService", () => {
         body: {
           name: "Example Place",
           region_id: 1,
-          placeCategory_id: 2,
+          // placeCategory_id: 2,
         },
       };
       const res = {};
@@ -80,7 +80,7 @@ describe("placeService", () => {
         body: {
           name: "Example Place",
           region_id: 1,
-          placeCategory_id: 2,
+          //placeCategory_id: 2,
         },
       };
       const res = {};
@@ -276,7 +276,7 @@ describe("placeService", () => {
         },
         body: {
           region_id: 1,
-          placeCategory_id: 1,
+          // placeCategory_id: 1,
           photo_id: 1,
           name: "Updated Place",
           openingHour: "9am - 5pm",
@@ -336,8 +336,9 @@ describe("placeService", () => {
 
     test("should return 500 status if an error occurs", async () => {
       // Arrange
-      
-        jest.spyOn(Place, "findByPk")
+
+      jest
+        .spyOn(Place, "findByPk")
         .mockRejectedValue(new Error("Database error"));
 
       // Act
