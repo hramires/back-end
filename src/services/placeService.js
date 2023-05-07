@@ -1,8 +1,11 @@
 const Place = require("../models/place");
 const PlaceCategory = require("../models/placeCategory");
-const { errorHandler } = require("../middleware/errorHandler");
+//const { errorHandler } = require("../middleware/errorHandler");
 const { where } = require("sequelize");
-const { createPlaceCategory, getAllByPlaceId } = require("../services/placeCategoryService");
+const {
+  createPlaceCategory,
+  getAllByPlaceId,
+} = require("../services/placeCategoryService");
 
 async function create(req, res, next) {
   try {
@@ -59,7 +62,7 @@ async function create(req, res, next) {
 async function getAll(req, res, next) {
   try {
     const places = await Place.findAll({
-      include: 'PlaceCategories' 
+      include: "PlaceCategories",
     });
     return {
       status: 200,
@@ -79,20 +82,28 @@ async function getById(req, res, next) {
     const categories = (await getAllByPlaceId(place.id)).data;
     const categoriesObj = [];
 
-    for( i=0; i<categories.listCategoriesId.length; i++){
-      categoriesObj.push(await Category.findByPk(categories.listCategoriesId[i]));
+    for (i = 0; i < categories.listCategoriesId.length; i++) {
+      categoriesObj.push(
+        await Category.findByPk(categories.listCategoriesId[i])
+      );
     }
 
     if (place) {
-      return { status: 200, data: {
-        place,
-        'categories': categoriesObj
-      } };
+      return {
+        status: 200,
+        data: {
+          place,
+          categories: categoriesObj,
+        },
+      };
     } else {
-      return { status: 404, data: {
-        place,
-        'categories': categoriesObj
-      } };
+      return {
+        status: 404,
+        data: {
+          place,
+          categories: categoriesObj,
+        },
+      };
     }
   } catch (error) {
     console.error("Error creating place:", error);
