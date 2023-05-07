@@ -2,7 +2,11 @@ const Place = require("../models/place");
 const PlaceCategory = require("../models/placeCategory");
 const { errorHandler } = require("../middleware/errorHandler");
 const { where } = require("sequelize");
-const { createPlaceCategory, getAllByPlaceId } = require("../services/placeCategoryService");
+const {
+  createPlaceCategory,
+  getAllByPlaceId,
+  updatePlaceCategory,
+} = require("../services/placeCategoryService");
 const Category = require("../models/category");
 
 async function create(req, res, next) {
@@ -59,30 +63,29 @@ async function create(req, res, next) {
 
 async function getAll(req, res, next) {
   try {
-    const onlyPlaces= await Place.findAll();
-    
-    const retorno = [];
-      let categoriesList = [];
+    const onlyPlaces = await Place.findAll();
 
-    for( i=0; i<onlyPlaces.length; i++){
+    const retorno = [];
+    let categoriesList = [];
+
+    for (i = 0; i < onlyPlaces.length; i++) {
       const PlaceCategories = await PlaceCategory.findAll({
-        where: {place_id: onlyPlaces[i].id}
+        where: { place_id: onlyPlaces[i].id },
       });
 
       categoriesList = [];
 
-      if(PlaceCategories.length!==0){
-
-      for(j=0; j<PlaceCategories.length; j++){
-
-      categoriesList.push( await Category.findByPk(PlaceCategories[j].category_id));
-
+      if (PlaceCategories.length !== 0) {
+        for (j = 0; j < PlaceCategories.length; j++) {
+          categoriesList.push(
+            await Category.findByPk(PlaceCategories[j].category_id)
+          );
+        }
+        retorno.push({ place: onlyPlaces[i], categories: categoriesList });
+      } else {
+        retorno.push({ place: onlyPlaces[i], categories: [] });
+      }
     }
-      retorno.push({place: onlyPlaces[i] , categories: categoriesList});
-    }else{
-      retorno.push({place: onlyPlaces[i] , categories: []});
-    }
-  }
     return {
       status: 200,
       data: retorno,
@@ -101,21 +104,28 @@ async function getById(req, res, next) {
     const categories = (await getAllByPlaceId(place.id)).data;
     const categoriesObj = [];
 
-    for( i=0; i<categories.listCategoriesId.length; i++){
-      categoriesObj.push(await Category.findByPk(categories.listCategoriesId[i]));
+    for (i = 0; i < categories.listCategoriesId.length; i++) {
+      categoriesObj.push(
+        await Category.findByPk(categories.listCategoriesId[i])
+      );
     }
 
-
     if (place) {
-      return { status: 200, data: {
-        place,
-        'categories': categoriesObj
-      } };
+      return {
+        status: 200,
+        data: {
+          place,
+          categories: categoriesObj,
+        },
+      };
     } else {
-      return { status: 404, data: {
-        place,
-        'categories': categoriesObj
-      } };
+      return {
+        status: 404,
+        data: {
+          place,
+          categories: categoriesObj,
+        },
+      };
     }
   } catch (error) {
     console.error("Error creating place:", error);
@@ -133,6 +143,7 @@ async function update(req, res, next) {
       const {
         region_id,
         photo_id,
+        category_ids,
         name,
         openingHour,
         contact,
@@ -141,6 +152,15 @@ async function update(req, res, next) {
         description,
         appointment,
       } = req.body;
+
+      let statusObj = await updatePlaceCategory(id, category_ids);
+      if (statusObj.status == 500) {
+        return {
+          status: statusObj.status,
+          data: { error: statusObj.data.error },
+        };
+      }
+
       await place.update({
         region_id: region_id || place.region_id,
         photo_id: photo_id || place.photo_id,
@@ -152,6 +172,7 @@ async function update(req, res, next) {
         description: description || place.description,
         appointment: appointment || place.appointment,
       });
+
       return { status: 200, data: { place } };
     } else {
       return { status: 404, data: { error: "Place not found" } };
