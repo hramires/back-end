@@ -1,4 +1,4 @@
-const { errorHandler } = require("../middleware/errorHandler");
+//const { errorHandler } = require("../middleware/errorHandler");
 const Category = require("../models/category");
 
 async function create(req, res, next) {
