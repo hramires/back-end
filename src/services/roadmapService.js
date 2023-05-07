@@ -39,6 +39,20 @@ async function create(req) {
   }
 }
 
+async function getAll() {
+  try {
+    const roadmaps = await Roadmap.findAll();
+    return {
+      status: 200,
+      data: { roadmaps },
+      message: "Roadmaps retrieved successfully",
+    };
+  } catch (error) {
+    console.error("Error getting roadmaps:", error);
+    return { status: 500, data: { error: error.message } };
+  }
+}
+
 async function getById(req, res, next) {
   try {
     const id = req;
@@ -67,4 +81,4 @@ async function getById(req, res, next) {
   }
 }
 
-module.exports = { getById, create };
+module.exports = { getAll, getById, create };
