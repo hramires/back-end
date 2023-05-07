@@ -30,6 +30,7 @@
     "debug": "^4.3.4",
     "depd": "^2.0.0",
     "destroy": "^1.2.0",
+    "dotenv": "^16.0.3",
     "dottie": "^2.0.3",
     "ee-first": "^1.1.1",
     "encodeurl": "^1.0.2",
@@ -70,7 +71,6 @@
     "moment-timezone": "^0.5.41",
     "ms": "^2.1.2",
     "negotiator": "^0.6.3",
-    "nodemon": "^2.0.22",
     "nopt": "^1.0.10",
     "normalize-path": "^3.0.0",
     "object-inspect": "^1.12.3",
@@ -135,5 +135,9 @@
     "url": "https://tools.ages.pucrs.br/rotas-rurais/back-end.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22"
+  }
 }

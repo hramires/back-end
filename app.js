@@ -6,31 +6,33 @@ const db = require("./src/config/database");
 const associations = require("./src/config/databaseAssociation");
 const preload = require("./src/config/databasePreLoad");
 
-// Set up associations
+// Set up database association
 associations();
 
 // Routes
-const userRouter = require("./src/routes/userRoute");
+const placeRouter = require("./src/routes/placeRoute");
+const categoryRouter = require("./src/routes/categoryRoute");
+const eventRouter = require("./src/routes/eventRoute");
+const roadmapRouter = require("./src/routes/roadmapRoute");
+//const userRouter = require("./src/routes/userRoute");
 
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
-
-app.use("/users", userRouter);
-
-// Route to fetch all users from the database
-app.get("/", async (req, res) => {
-  try {
-    const users = await User.findAll();
-    res.json(users);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
-  }
+//app.use(errorHandler);
+app.use((err, req, res, next) => {
+  errorHandler(err, req, res, next);
 });
 
+// Routes
+app.use("/place", placeRouter);
+app.use("/category", categoryRouter);
+app.use("/event", eventRouter);
+app.use("/roadmap", roadmapRouter);
+
+// Database connection
 db.authenticate()
   .then(() => {
     console.log("Database connected...");
@@ -46,4 +48,4 @@ db.authenticate()
     //Preload database data
     preload();
   })
-  .catch((err) => console.log(err));
+  .catch((error) => console.log(error));

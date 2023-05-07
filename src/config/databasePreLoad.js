@@ -1,73 +1,101 @@
 // Importing Models
-const User = require("../models/user");
+const Category = require("../models/category");
 const Roadmap = require("../models/roadmap");
+const Photo = require("../models/photo");
 const Region = require("../models/region");
 const Event = require("../models/event");
-const EnterpriseCategory = require("../models/enterpriseCategory");
-const Enterprise = require("../models/enterprise");
+const PlaceCategory = require("../models/placeCategory");
+const Place = require("../models/place");
+const RoadmapPlace = require("../models/roadmapPlace");
+const cleanDatabase = require("../utils/cleanDatabase");
 
 // Preload User data into the database
+
 async function preloadData() {
   try {
-    const enterpriseCategoryData = [
+    const categoryData = [
       {
         name: "Cervejarias",
       },
     ];
 
-    const userData = [{ email: "Jorge@email.com", password: "jorge123" }];
-
-    const eventData = [
+    const placeCategoryData = [
       {
-        region_id: 1,
-        event_name: "SHOW PEDRO SAMPAIO - CAXIAS DO SUL",
-        event_description: "Aqui é festa =)",
-        event_date: new Date("2023-03-30").toISOString(),
-        time: "22:00",
-        location:
-          "Pavilhões da Festa da Uva. R. Ludovíco Cavinato, 1431 - Nossa Sra. da Saúde, Caxias do Sul - RS",
-        photo: null,
+        category_id: 1,
+        place_id: 1,
       },
     ];
 
+    const photoData = [
+      {
+        photo_url: "photoUrl",
+        description: "Foto do lugar que vamos ",
+      },
+    ];
     const regionData = [
       {
         city: "Caxias do Sul",
         description:
           "Grande do Sul com maior número de habitantes, Caxias do Sul está no ranking dos 100 melhores municípios brasileiros para se viver, sendo a primeira cidade gaúcha a liderar essa lista.",
-        photo: null,
       },
     ];
 
-    const enterpriseData = [
+    const placeData = [
       {
         region_id: 1,
-        enterpriseCategory_id: 1,
-        enterprise_name: "Bies Haus Bar",
-        photos: null,
+        placeCategory_id: 1,
+        place_id: 1,
+        name: "Casa da Edição",
         opening_hour: "08:00",
-        appointment: "Isso é um appointment",
+        contact: "+5551998231918",
+        latitude: "55",
+        longitude: "11",
+        description: "Casa da edição nova",
+        appointment: false,
       },
     ];
 
     const roadmapData = [
       {
-        enterprise_id: 1,
-        region_id: 1,
-        roadmap_name: "",
-        roadmap: "{map}",
-        description: "Segue reto",
+        roadmapPlace_id: 1,
+        name: "Esse só tem um local de visitação",
+        description: "Segue reto, primeira e unica parada é lá",
       },
     ];
 
-    await User.bulkCreate(userData);
-    await Region.bulkCreate(regionData);
-    await EnterpriseCategory.bulkCreate(enterpriseCategoryData);
-    await Enterprise.bulkCreate(enterpriseData);
-    await Roadmap.bulkCreate(roadmapData);
-    await Event.bulkCreate(eventData);
+    const roadmapPlaceData = [
+      {
+        roadmap_id: 1,
+        place_id: 1,
+        order: 1,
+      },
+    ];
 
-    console.log("User data preloaded successfully!");
+    const eventData = [
+      {
+        place_id: 1,
+        name: "SHOW PEDRO SAMPAIO - CAXIAS DO SUL",
+        description: "Aqui é festa =)",
+        date: new Date("2023-03-30").toISOString(),
+        time: "22:00",
+        location:
+          "Pavilhões da Festa da Uva. R. Ludovíco Cavinato, 1431 - Nossa Sra. da Saúde, Caxias do Sul - RS",
+      },
+    ];
+
+    // Cleaning data
+    cleanDatabase();
+
+    await Category.bulkCreate(categoryData);
+    await Region.bulkCreate(regionData);
+    await Photo.bulkCreate(photoData);
+    await Place.bulkCreate(placeData);
+    await PlaceCategory.bulkCreate(placeCategoryData);
+    await Event.bulkCreate(eventData);
+    await Roadmap.bulkCreate(roadmapData);
+    await RoadmapPlace.bulkCreate(roadmapPlaceData);
+
+    console.log("Data preloaded successfully!");
   } catch (error) {
     console.error(error);
   }

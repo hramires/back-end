@@ -1,7 +1,7 @@
-const { Sequelize, DataTypes } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const db = require("../config/database");
 
-const Roadmap = db.define("Roadmap", {
+const Category = db.define("Category", {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -12,10 +12,6 @@ const Roadmap = db.define("Roadmap", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  description: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
 });
 
-module.exports = Roadmap;
+module.exports = Category;

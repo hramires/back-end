@@ -8,19 +8,19 @@ const Event = db.define("Event", {
     primaryKey: true,
     autoIncrement: true,
   },
-  region_id: {
+  place_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  event_name: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  event_description: {
+  description: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  event_date: {
+  date: {
     type: DataTypes.DATE,
     allowNull: false,
   },
@@ -31,10 +31,6 @@ const Event = db.define("Event", {
   location: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  photo: {
-    type: DataTypes.BLOB,
-    allowNull: true,
   },
 });
 
