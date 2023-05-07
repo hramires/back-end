@@ -1,9 +1,17 @@
 const { TimeoutError, ValidationError } = require("sequelize");
 const Event = require("../models/event");
 
-async function create({ place_id, name, description, date, time, location }) {
+async function create({
+  place_id,
+  name,
+  description,
+  startDate,
+  endDate,
+  openingHour,
+  location,
+}) {
   let status, data;
-  if (!name || !date || !time || !location) {
+  if (!name || !location) {
     return { status: 400, data: { error: "Missing required fields" } };
   }
   try {
@@ -11,8 +19,9 @@ async function create({ place_id, name, description, date, time, location }) {
       place_id,
       name,
       description,
-      date,
-      time,
+      startDate,
+      endDate,
+      openingHour,
       location,
     });
     status = 201;
@@ -77,13 +86,22 @@ async function update(req, res, next) {
     const id = req.params.id;
     const event = await Event.findByPk(id);
     if (event) {
-      const { place_id, name, description, date, time, location } = req.body;
+      const {
+        place_id,
+        name,
+        description,
+        startDate,
+        endDate,
+        openingHour,
+        location,
+      } = req.body;
       await event.update({
         place_id: place_id || event.place_id,
         name: name || event.name,
         description: description || event.description,
-        date: date || event.date,
-        time: time || event.time,
+        startDate: startDate || event.startDate,
+        endDate: endDate || event.endDate,
+        openingHour: openingHour || event.openingHour,
         location: location || event.location,
       });
       return { status: 200, data: { event } };
