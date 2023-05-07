@@ -79,7 +79,6 @@ async function update(req, res, next) {
     if (place) {
       const {
         region_id,
-        placeCategory_id,
         photo_id,
         name,
         openingHour,
@@ -91,7 +90,6 @@ async function update(req, res, next) {
       } = req.body;
       await place.update({
         region_id: region_id || place.region_id,
-        placeCategory_id: placeCategory_id || place.placeCategory_id,
         photo_id: photo_id || place.photo_id,
         name: name || place.name,
         openingHour: openingHour || place.openingHour,
