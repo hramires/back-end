@@ -40,6 +40,20 @@ async function create(req) {
   }
 }
 
+async function getAll() {
+  try {
+    const roadmaps = await Roadmap.findAll();
+    return {
+      status: 200,
+      data: { roadmaps },
+      message: "Roadmaps retrieved successfully",
+    };
+  } catch (error) {
+    console.error("Error getting roadmaps:", error);
+    return { status: 500, data: { error: error.message } };
+  }
+}
+
 async function getById(req, res, next) {
   try {
     const id = req;
@@ -68,37 +82,4 @@ async function getById(req, res, next) {
   }
 }
 
-async function getAll() {
-  try {
-    const onlyRoadmaps = await Roadmap.findAll();
-    const retorno = [];
-    let placesList = [];
-
-    for( i = 0; i < onlyRoadmaps.length; i++){
-      const roadmapPlace = await RoadmapPlace.findAll({
-        where: {roadmap_id: onlyRoadmaps[i].id}
-      });
-
-      placesList = [];
-
-      if(roadmapPlace.length !== 0){
-        for(j = 0; j < roadmapPlace.length; j++){
-          placesList.push( await Place.findByPk(roadmapPlace[j].place_id));
-        }
-        retorno.push({roadmap: onlyRoadmaps[i], places: placesList});
-      } else {
-      retorno.push({roadmap: onlyRoadmaps[i], places: []});
-    }
-  }
-    return {
-      status: 200,
-      data: retorno,
-      message: "Roadmap retrieved successfully",
-    };
-  } catch (error) {
-    console.error("Error getting roadmap:", error);
-    return { status: 500, data: { error: "Internal Server Error" } };
-  }
-}
-
-module.exports = { getById, create, getAll };
+module.exports = { getAll, getById, create };

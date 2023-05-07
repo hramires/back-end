@@ -22,9 +22,9 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 //app.use(errorHandler);
-app.use((err, req, res, next) => {
-  errorHandler(err, req, res, next);
-});
+// app.use((err, req, res, next) => {
+//   errorHandler(err, req, res, next);
+// });
 
 // Routes
 app.use("/place", placeRouter);
