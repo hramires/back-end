@@ -74,4 +74,22 @@ async function updateRoadmapPlace(roadmap_id, place_ids) {
   }
 }
 
-module.exports = { createRoadmapPlace, getAllByRoadmapId, updateRoadmapPlace };
+async function removeRoadmapPlace(place_id, roadmap_id) {
+  try {
+    const roadmapPlace = await RoadmapPlace.findAll({
+      where: { place_id: place_id, roadmap_id: roadmap_id },
+    });
+
+    if (roadmapPlace.length == 0) {
+      return { status: 404, data: { error: "Relation not found" } };
+    }
+    roadmapPlace.forEach((element) => {
+      element.destroy();
+    });
+    return { status: 204, data: {} };
+  } catch (error) {
+    return { status: 500, data: { error: "Internal Server Error" } };
+  }
+}
+
+module.exports = { createRoadmapPlace, getAllByRoadmapId, updateRoadmapPlace, removeRoadmapPlace };

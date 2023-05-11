@@ -1,6 +1,6 @@
 const Roadmap = require("../models/roadmap");
 const Place = require("../models/place");
-const { createRoadmapPlace, getAllByRoadmapId } = require("../services/roadmapPlaceService");
+const { createRoadmapPlace, getAllByRoadmapId, updateRoadmapPlace } = require("../services/roadmapPlaceService");
 
 async function create(req) {
   try {
@@ -114,4 +114,18 @@ async function update(req, res, next) {
   }
 }
 
-module.exports = { getAll, getById, create, update };
+async function remove(req, res, next) {
+  try {
+    const id = req.params.id;
+    const roadmap = await Roadmap.findByPk(id);
+    if (!roadmap) {
+      return { status: 404, data: { error: "Roadmap not found" } };
+    }
+    await roadmap.destroy();
+    return { status: 204, data: {} };
+  } catch (error) {
+    return { status: 500, data: { error: "Internal Server Error" } };
+  }
+}
+
+module.exports = { getAll, getById, create, update, remove };
