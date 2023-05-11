@@ -1,5 +1,5 @@
 const Region = require("../models/region");
-const { create, getAll, getById } = require("../services/regionService");
+const { create, getAll, getById, update, remove } = require("../services/regionService");
 
 async function createRegion(req, res, next) {
     let { status, data } = await create(req, res, next);
@@ -16,4 +16,14 @@ async function getRegionById(req, res, next) {
     res.status(status).json(data);
 }
 
-module.exports = { createRegion, getAllRegions, getRegionById };
+async function updateRegion(req, res, next) {
+    let { status, data } = await update(req, res, next);
+    res.status(status).json(data);
+  }
+  
+  async function removeRegion(req, res, next) {
+    let { status, data } = await remove(req, res, next);
+    res.status(status).json(data);
+  }
+
+module.exports = { createRegion, getAllRegions, getRegionById, updateRegion, removeRegion };
