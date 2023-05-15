@@ -20,6 +20,7 @@ async function create(req, res, next) {
       contact,
       latitude,
       longitude,
+      address,
       description,
       appointment,
     } = req.body;
@@ -37,6 +38,7 @@ async function create(req, res, next) {
       contact,
       latitude,
       longitude,
+      address,
       description,
       appointment,
     });
@@ -125,6 +127,7 @@ async function update(req, res, next) {
         contact,
         latitude,
         longitude,
+        address,
         description,
         appointment,
       } = req.body;
@@ -145,6 +148,7 @@ async function update(req, res, next) {
         contact: contact || place.contact,
         latitude: latitude || place.latitude,
         longitude: longitude || place.longitude,
+        address: address || place.address,
         description: description || place.description,
         appointment: appointment || place.appointment,
       });
