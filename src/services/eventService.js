@@ -1,5 +1,6 @@
-const { TimeoutError, ValidationError } = require("sequelize");
+const { TimeoutError, ValidationError, where } = require("sequelize");
 const Event = require("../models/event");
+const Place = require("../models/place");
 
 async function create({
   place_id,
@@ -122,4 +123,32 @@ async function remove(req, res, next) {
   }
 }
 
-module.exports = { create, getById, getAll, update, remove };
+async function getAllByRegionId(req, res, next){
+  try {
+  const region_id= req.params.region_id;
+  let listEvent = [];
+  let retorno= [];
+  let auxPlace;
+  listEvent = await Event.findAll();
+
+  for(i=0;i<listEvent.length;i++){
+
+    auxPlace= await Place.findByPk(listEvent[i].place_id);
+    
+    if(auxPlace.dataValues.region_id == region_id){
+      retorno.push(listEvent[i]);
+    }
+  }
+  return {
+    status: 200,
+    data: retorno };
+
+} catch (error) {
+  
+  console.error("Error getting events:", error);
+  return { status: 500, data: { error: "Internal Server Error" } };
+  
+}
+}
+
+module.exports = { create, getById, getAll, update, remove, getAllByRegionId };
