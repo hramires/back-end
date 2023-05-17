@@ -6,6 +6,8 @@ const router = express.Router();
 // GET all roadmaps
 router.get("/", roadmapController.getAllRoadmaps);
 
+router.get("/region/:region_id", roadmapController.getAllByRegionIdRoadmap)
+
 // GET roadmap by id
 router.get("/:id", roadmapController.getRoadmap);
 

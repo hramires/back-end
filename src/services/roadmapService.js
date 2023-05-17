@@ -81,4 +81,24 @@ async function getById(req, res, next) {
   }
 }
 
-module.exports = { getAll, getById, create };
+async function getAllByRegionId(req, res, next){
+  try {
+  const region_id= parseInt(req.params.region_id);
+  let retorno= [];
+  retorno = await Roadmap.findAll({
+    where: {region_id: region_id}
+  })
+  
+  return {
+    status: 200,
+    data: retorno };
+
+} catch (error) {
+  
+  console.error("Error getting events:", error);
+  return { status: 500, data: { error: "Internal Server Error" } };
+  
+}
+}
+
+module.exports = { getAll, getById, create, getAllByRegionId };
