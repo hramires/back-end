@@ -16,6 +16,10 @@ const Region = db.define("Region", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  photo: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
 module.exports = Region;

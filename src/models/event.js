@@ -32,6 +32,10 @@ const Event = db.define("Event", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  photos: {
+    type: DataTypes.ARRAY,
+    allowNull: true,
+  },
 });
 
 module.exports = Event;
