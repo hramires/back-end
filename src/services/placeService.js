@@ -177,10 +177,33 @@ async function remove(req, res, next) {
   }
 }
 
+
+async function getAllByRegionId(req, res, next){
+  try {
+  const region_id= parseInt(req.params.region_id);
+  let retorno= [];
+  retorno = await Place.findAll({
+    where: {region_id: region_id}
+  })
+  console.log(retorno);
+  return {
+    status: 200,
+    data: retorno };
+
+} catch (error) {
+  
+  console.error("Error getting events:", error);
+  return { status: 500, data: { error: "Internal Server Error" } };
+  
+}
+}
+
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   remove,
+  getAllByRegionId,
 };
