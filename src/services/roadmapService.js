@@ -1,5 +1,6 @@
 const Roadmap = require("../models/roadmap");
 const Place = require("../models/place");
+const RoadmapPlace = require("../models/roadmapPlace");
 const { createRoadmapPlace, getAllByRoadmapId } = require("../services/roadmapPlaceService");
 
 async function create(req) {
