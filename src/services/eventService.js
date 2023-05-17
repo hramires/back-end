@@ -22,6 +22,14 @@ async function create({
       endDate,
       openingHour,
     });
+     
+    var dateStart = new Date(startDate);
+    var dateEnd = new Date(endDate);
+
+    if (dateStart > dateEnd) {
+      return { status: 400, data: { error: "Invalid date" } };
+    }
+
     status = 201;
     data = newEvent;
   } catch (error) {
