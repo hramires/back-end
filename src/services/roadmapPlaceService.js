@@ -42,6 +42,6 @@ async function getAllByRoadmapId(roadmap_id) {
       console.error("Error getting RoadmapPlaces:", error);
       return { status: 500, data: { error: "Internal Server Error" } };
     }
-  }
+}
 
 module.exports = { createRoadmapPlace, getAllByRoadmapId };

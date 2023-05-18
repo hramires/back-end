@@ -1,6 +1,7 @@
 const Roadmap = require("../models/roadmap");
 const Place = require("../models/place");
 const { createRoadmapPlace, getAllByRoadmapId } = require("../services/roadmapPlaceService");
+const { append } = require("vary");
 
 async function create(req) {
   try {
@@ -59,15 +60,16 @@ async function getById(req, res, next) {
     const roadmap = await Roadmap.findByPk(id);
     const places = (await getAllByRoadmapId(roadmap.id)).data;
     const placesObj = [];
+    const roadmapPlaceList = [];
 
     for( i = 0; i < places.listPlacesId.length; i++){
       placesObj.push(await Place.findByPk(places.listPlacesId[i]));
     }
 
+    roadmapPlaceList.push(roadmap, placesObj);
     if (roadmap) {
       return { status: 200, data: {
-        roadmap,
-        'places': placesObj
+        roadmapPlaceList
       } };
     } else {
       return { status: 404, data: {
