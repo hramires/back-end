@@ -67,14 +67,13 @@ async function getById(req, res, next) {
     }
 
     roadmapPlaceList.push(roadmap, placesObj);
-    if (roadmap) {
+    if (roadmapPlaceList) {
       return { status: 200, data: {
         roadmapPlaceList
       } };
     } else {
       return { status: 404, data: {
-        roadmap,
-        'places': placesObj
+        roadmapPlaceList
       } };
     }
   } catch (error) {
