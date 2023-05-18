@@ -185,7 +185,6 @@ async function getAllByRegionId(req, res, next){
   retorno = await Place.findAll({
     where: {region_id: region_id}
   })
-  console.log(retorno);
   return {
     status: 200,
     data: retorno };
