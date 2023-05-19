@@ -33,7 +33,7 @@ const Event = db.define("Event", {
     allowNull: true,
   },
   photos: {
-    type: DataTypes.ARRAY,
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true,
   },
 });

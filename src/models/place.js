@@ -17,7 +17,7 @@ const Place = db.define("Place", {
     allowNull: false,
   },
   photos: {
-    type: DataTypes.ARRAY,
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true,
   },
   openingHour: {
