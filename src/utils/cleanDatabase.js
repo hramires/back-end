@@ -1,6 +1,5 @@
 const Category = require("../models/category");
 const Roadmap = require("../models/roadmap");
-const Photo = require("../models/photo");
 const Region = require("../models/region");
 const Event = require("../models/event");
 const PlaceCategory = require("../models/placeCategory");
@@ -17,7 +16,6 @@ async function cleanDatabase() {
     await Roadmap.destroy({ truncate: { cascade: true } });
     await Event.destroy({ truncate: { cascade: true } });
     await Place.destroy({ truncate: { cascade: true } });
-    await Photo.destroy({ truncate: { cascade: true } });
     await Region.destroy({ truncate: { cascade: true } });
 
     console.log("Database cleaned successfully!");
