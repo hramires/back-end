@@ -16,8 +16,8 @@ const Place = db.define("Place", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  photo_id: {
-    type: DataTypes.INTEGER,
+  photos: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true,
   },
   openingHour: {
@@ -42,6 +42,10 @@ const Place = db.define("Place", {
   },
   appointment: {
     type: DataTypes.BOOLEAN,
+    allowNull: true,
+  },
+  address: {
+    type: DataTypes.STRING,
     allowNull: true,
   },
 });

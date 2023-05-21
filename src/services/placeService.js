@@ -20,6 +20,7 @@ async function create(req, res, next) {
       contact,
       latitude,
       longitude,
+      address,
       description,
       appointment,
     } = req.body;
@@ -37,6 +38,7 @@ async function create(req, res, next) {
       contact,
       latitude,
       longitude,
+      address,
       description,
       appointment,
     });
@@ -125,6 +127,7 @@ async function update(req, res, next) {
         contact,
         latitude,
         longitude,
+        address,
         description,
         appointment,
       } = req.body;
@@ -145,6 +148,7 @@ async function update(req, res, next) {
         contact: contact || place.contact,
         latitude: latitude || place.latitude,
         longitude: longitude || place.longitude,
+        address: address || place.address,
         description: description || place.description,
         appointment: appointment || place.appointment,
       });
@@ -173,10 +177,32 @@ async function remove(req, res, next) {
   }
 }
 
+
+async function getAllByRegionId(req, res, next){
+  try {
+  const region_id= parseInt(req.params.region_id);
+  let retorno= [];
+  retorno = await Place.findAll({
+    where: {region_id: region_id}
+  })
+  return {
+    status: 200,
+    data: retorno };
+
+} catch (error) {
+  
+  console.error("Error getting events:", error);
+  return { status: 500, data: { error: "Internal Server Error" } };
+  
+}
+}
+
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   remove,
+  getAllByRegionId,
 };

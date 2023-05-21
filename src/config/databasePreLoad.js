@@ -1,7 +1,6 @@
 // Importing Models
 const Category = require("../models/category");
 const Roadmap = require("../models/roadmap");
-const Photo = require("../models/photo");
 const Region = require("../models/region");
 const Event = require("../models/event");
 const PlaceCategory = require("../models/placeCategory");
@@ -20,33 +19,33 @@ async function preloadData() {
       },
     ];
 
-    const photoData = [
-      {
-        id: 1,
-        photo_url: "photoUrl",
-        description: "Foto do lugar que vamos ",
-      },
-    ];
     const regionData = [
       {
         id: 1,
         city: "Caxias do Sul",
         description:
           "Grande do Sul com maior número de habitantes, Caxias do Sul está no ranking dos 100 melhores municípios brasileiros para se viver, sendo a primeira cidade gaúcha a liderar essa lista.",
+        photo: "s3://s3-URL-example",
       },
     ];
 
     const placeData = [
       {
         id: 1,
-        region_id: 1,
         name: "Casa da Edição",
+        region_id: 1,
+        photos: [
+          "s3://s3-URL-example",
+          "s3://s3-URL-example-2",
+          "s3://s3-URL-example-3",
+        ],
         openingHour: "08:00",
         contact: "+5551998231918",
         latitude: "55",
         longitude: "11",
         description: "Casa da edição nova",
         appointment: false,
+        address: "Endereço proveniente da API do mapa.",
       },
     ];
 
@@ -84,6 +83,11 @@ async function preloadData() {
         startDate: new Date("2023-03-25").toISOString(),
         endDate: new Date("2023-03-30").toISOString(),
         openingHour: "22:00",
+        photos: [
+          "s3://s3-URL-example",
+          "s3://s3-URL-example-2",
+          "s3://s3-URL-example-3",
+        ],
       },
     ];
 
@@ -92,7 +96,6 @@ async function preloadData() {
 
     await Category.bulkCreate(categoryData);
     await Region.bulkCreate(regionData);
-    await Photo.bulkCreate(photoData);
     await Place.bulkCreate(placeData);
     await PlaceCategory.bulkCreate(placeCategoryData);
     await Event.bulkCreate(eventData);

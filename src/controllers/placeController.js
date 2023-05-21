@@ -5,6 +5,7 @@ const {
   getById,
   update,
   remove,
+  getAllByRegionId,
 } = require("../services/placeService");
 
 async function createPlace(req, res, next) {
@@ -32,10 +33,16 @@ async function removePlace(req, res, next) {
   res.status(status).send();
 }
 
+async function getAllByRegionIdPlace(req, res, next) {
+  let { status, data } = await getAllByRegionId(req, res, next);
+  res.status(status).json(data);
+}
+
 module.exports = {
   createPlace,
   getAllPlaces,
   getPlace,
   updatePlace,
   removePlace,
+  getAllByRegionIdPlace,
 };

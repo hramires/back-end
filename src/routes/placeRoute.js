@@ -11,6 +11,8 @@ router.post("/", placeController.createPlace);
 // GET all places
 router.get("/", placeController.getAllPlaces);
 
+router.get("/region/:region_id", placeController.getAllByRegionIdPlace)
+
 // GET place by id
 router.get("/:id", placeController.getPlace);
 

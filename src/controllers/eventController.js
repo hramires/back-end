@@ -4,6 +4,7 @@ const { getById } = require("../services/eventService");
 const { getAll } = require("../services/eventService");
 const { update } = require("../services/eventService");
 const { remove } = require("../services/eventService");
+const { getAllByRegionId } = require("../services/eventService");
 
 async function createEvent(req, res) {
   const { place_id, name, description, startDate, endDate, openingHour } = req.body;
@@ -39,10 +40,16 @@ async function removeEvent(req, res, next) {
   res.status(status).json(data);
 }
 
+async function getAllByRegionIdEvent(req, res, next){
+  let { status, data } = await getAllByRegionId(req, res, next);
+  res.status(status).json(data);
+}
+
 module.exports = {
   createEvent,
   getEvent,
   getAllEvents,
   updateEvent,
   removeEvent,
+  getAllByRegionIdEvent,
 };
