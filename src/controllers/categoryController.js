@@ -31,6 +31,7 @@ async function removeCategory(req, res, next) {
   let { status, data } = await remove(req, res, next);
   res.status(status).json(data);
 }
+
 module.exports = {
   createCategory,
   getAllCategories,

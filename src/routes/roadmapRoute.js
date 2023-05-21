@@ -12,4 +12,10 @@ router.get("/:id", roadmapController.getRoadmap);
 // CREATE roadmap
 router.post("/", roadmapController.createRoadmap);
 
+// UPDATE roadmap by id
+router.put("/:id", roadmapController.updateRoadmap);
+
+// REMOVE roadmap by id
+router.delete("/:id", roadmapController.removeRoadmap);
+
 module.exports = router;

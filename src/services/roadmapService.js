@@ -1,7 +1,6 @@
 const Roadmap = require("../models/roadmap");
 const Place = require("../models/place");
-const RoadmapPlace = require("../models/roadmapPlace");
-const { createRoadmapPlace, getAllByRoadmapId } = require("../services/roadmapPlaceService");
+const { createRoadmapPlace, getAllByRoadmapId, updateRoadmapPlace } = require("../services/roadmapPlaceService");
 
 async function create(req) {
   try {
@@ -82,4 +81,51 @@ async function getById(req, res, next) {
   }
 }
 
-module.exports = { getAll, getById, create };
+async function update(req, res, next) {
+  try {
+    const id = req.params.id;
+    const roadmap = await Roadmap.findByPk(id);
+    if (roadmap) {
+      const {
+        name,
+        description,
+        place_ids
+      } = req.body;
+
+      let statusObj = await updateRoadmapPlace(id, place_ids);
+      if (statusObj.status == 500) {
+        return {
+          status: statusObj.status,
+          data: { error: statusObj.data.error },
+        };
+      }
+
+      await roadmap.update({
+        name: name || roadmap.name,
+        description: description || roadmap.description
+      });
+
+      return { status: 200, data: { roadmap } };
+    } else {
+      return { status: 404, data: { error: "Roadmap not found" } };
+    }
+  } catch (error) {
+    return { status: 500, data: { error: "Internal Server Error" } };
+  }
+}
+
+async function remove(req, res, next) {
+  try {
+    const id = req.params.id;
+    const roadmap = await Roadmap.findByPk(id);
+    if (!roadmap) {
+      return { status: 404, data: { error: "Roadmap not found" } };
+    }
+    await roadmap.destroy();
+    return { status: 204, data: {} };
+  } catch (error) {
+    return { status: 500, data: { error: "Internal Server Error" } };
+  }
+}
+
+module.exports = { getAll, getById, create, update, remove };

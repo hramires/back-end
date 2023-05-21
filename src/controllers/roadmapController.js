@@ -1,4 +1,4 @@
-const { getAll, getById, create } = require("../services/roadmapService");
+const { getAll, getById, create, update, remove } = require("../services/roadmapService");
 
 async function getAllRoadmaps(req, res) {
     const { status, data } = await getAll();
@@ -16,4 +16,14 @@ async function createRoadmap(req, res, next) {
     res.status(status).json(data);
 }
 
-module.exports = { getAllRoadmaps, getRoadmap, createRoadmap };
+async function updateRoadmap(req, res, next) {
+    let { status, data } = await update(req, res, next);
+    res.status(status).json(data);
+}
+
+async function removeRoadmap(req, res, next) {
+    let { status, data } = await remove(req, res, next);
+    res.status(status).send(data);
+}
+
+module.exports = { getAllRoadmaps, getRoadmap, createRoadmap, updateRoadmap, removeRoadmap };
